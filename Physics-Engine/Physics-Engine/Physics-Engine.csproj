@@ -43,7 +43,17 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Core\Rigidbody2D.cs" />
+        <Compile Include="Core\World.cs" />
         <Compile Include="Engine.cs" />
+        <Compile Include="Graphics\BoxShape.cs" />
+        <Compile Include="Graphics\Camera2D.cs" />
+        <Compile Include="Graphics\CircleShape.cs" />
+        <Compile Include="Graphics\DebugRenderer2D.cs" />
+        <Compile Include="Graphics\IRender.cs" />
+        <Compile Include="Graphics\Line.cs" />
+        <Compile Include="Graphics\PolygonShape.cs" />
+        <Compile Include="Graphics\Shape2D.cs" />
+        <Compile Include="Graphics\ShapeRenderer.cs" />
         <Compile Include="Graphics\Window.cs" />
         <Compile Include="Math\Mathematics.cs" />
         <Compile Include="Math\Vector2.cs" />
