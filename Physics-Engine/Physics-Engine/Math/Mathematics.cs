@@ -25,5 +25,19 @@
         {
             return a.x * b.y - a.y * b.x;
         }
+        public static float Clamp(float current, float min, float max)
+        {
+            if (current <= min)
+            {
+                return min;
+            }
+
+            if (current >= max)
+            {
+                return max;
+            }
+
+            return current;
+        }
     }
 }
