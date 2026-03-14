@@ -1,4 +1,5 @@
 ﻿using System;
+using Physics_Engine.Core;
 
 namespace Physics_Engine.Math
 {
@@ -12,7 +13,7 @@ namespace Physics_Engine.Math
         public static Vector2 Left = new Vector2(-1, 0);
         public static Vector2 Up = new Vector2(0, 1);
         public static Vector2 Down = new Vector2(0, -1);
-
+        
         public Vector2(float x, float y)
         {
             this.x = x;
@@ -23,7 +24,6 @@ namespace Physics_Engine.Math
         public static Vector2 operator +(Vector2 a, Vector2 b) => new Vector2(a.x + b.x, a.y + b.y);
         public static Vector2 operator -(Vector2 a, Vector2 b) => new Vector2(a.x - b.x, a.y - b.y);
         public static Vector2 operator *(Vector2 a, float scalar) => new Vector2(a.x * scalar, a.y * scalar);
-
         public static Vector2 operator /(Vector2 a, float scalar)
         {
             if (scalar == 0)
@@ -34,25 +34,31 @@ namespace Physics_Engine.Math
 
             return new Vector2(a.x / scalar, a.y / scalar);
         }
-
         public static Vector2 operator -(Vector2 a) => new Vector2(-1 * a.x, -1 * a.y);
 
-
-        public bool Equal(Vector2 other)
+        public static Vector2 Translate(Vector2 vector2, Transform transform)
         {
-            if (this.x == other.x && y == other.y)
+            //Rotation matrix
+            return new Vector2(
+                transform.Cos * vector2.x - transform.Sin * vector2.y + transform.PositionX,
+                transform.Sin * vector2.x + transform.Cos * vector2.y + transform.PositionY
+            );
+        }
+
+        private bool Equals(Vector2 other)
+        {
+            if (System.Math.Abs(this.x - other.x) < 0.0001f && System.Math.Abs(y - other.y) < 0.0001f)
             {
                 return true;
             }
             
             return false;
         }
-
         public override bool Equals(object obj)
         {
             if (obj is Vector2 other)
             {
-                return Equal(other);
+                return Equals(other);
             }
 
             return false;

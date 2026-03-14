@@ -1,11 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Physics_Engine.Core;
 
 namespace Physics_Engine.Graphics
 {
     public class ShapeRenderer
     {
+        private static ShapeRenderer _instance;
+        public static ShapeRenderer Instance
+        {
+            get
+            {
+                _instance ??= new ShapeRenderer();
+                return _instance;
+            }
+        }
+
         public readonly List<IRender> Renderables = new List<IRender>();
+
+        private ShapeRenderer() { }
 
         public void Render()
         {

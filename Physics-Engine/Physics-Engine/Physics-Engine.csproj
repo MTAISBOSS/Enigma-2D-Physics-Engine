@@ -11,6 +11,7 @@
         <AssemblyName>Physics_Engine</AssemblyName>
         <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+        <LangVersion>default</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -42,8 +43,27 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Core\Rigidbody2D.cs" />
-        <Compile Include="Core\World.cs" />
+        <Compile Include="Core\Collision\Collider2D.cs" />
+        <Compile Include="Core\Component\Component.cs" />
+        <Compile Include="Core\Component\ComponentBase.cs" />
+        <Compile Include="Core\IMovement.cs" />
+        <Compile Include="Core\IIndices.cs" />
+        <Compile Include="Core\Input System\InputBinding.cs" />
+        <Compile Include="Core\Input System\InputSystem.cs" />
+        <Compile Include="Core\IRotation.cs" />
+        <Compile Include="Core\IVertices.cs" />
+        <Compile Include="Core\Physics 2D\Physics2D.cs" />
+        <Compile Include="Core\Physics 2D\PhysicsObject.cs" />
+        <Compile Include="Core\Physics 2D\Physics2DSetting.cs" />
+        <Compile Include="Core\Rigidbody\ShapeArea.cs" />
+        <Compile Include="Core\Rigidbody\Body.cs" />
+        <Compile Include="Core\Rigidbody\BoxShapeArea.cs" />
+        <Compile Include="Core\Rigidbody\BoxRigidbody2D.cs" />
+        <Compile Include="Core\Rigidbody\CircleShapeArea.cs" />
+        <Compile Include="Core\Rigidbody\CircleRigidbody2D.cs" />
+        <Compile Include="Core\Rigidbody\Rigidbody2D.cs" />
+        <Compile Include="Core\Rigidbody\Rigidbody2DExtensions.cs" />
+        <Compile Include="Core\Transform.cs" />
         <Compile Include="Engine.cs" />
         <Compile Include="Graphics\BoxShape.cs" />
         <Compile Include="Graphics\Camera2D.cs" />
@@ -54,7 +74,9 @@
         <Compile Include="Graphics\PolygonShape.cs" />
         <Compile Include="Graphics\Shape2D.cs" />
         <Compile Include="Graphics\ShapeRenderer.cs" />
+        <Compile Include="Graphics\Time.cs" />
         <Compile Include="Graphics\Window.cs" />
+        <Compile Include="Math\HelperExtensions.cs" />
         <Compile Include="Math\Mathematics.cs" />
         <Compile Include="Math\Vector2.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
