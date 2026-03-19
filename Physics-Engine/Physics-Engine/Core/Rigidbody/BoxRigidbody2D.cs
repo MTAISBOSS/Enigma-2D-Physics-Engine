@@ -1,34 +1,77 @@
-﻿using Physics_Engine.Math;
+﻿using Physics_Engine.Core.Collision;
+using Physics_Engine.Math;
 
 namespace Physics_Engine.Core.Rigidbody
 {
-    public class BoxRigidbody2D : Rigidbody2D , IVertices, IIndices
+    public class BoxRigidbody2D : Rigidbody2D, IVertices, IIndices
     {
-        public BoxShapeArea BoxShapeArea { get; set; }
-        protected override bool TryCreate()
+        public BoxArea BoxArea { get; set; }
+
+        public override bool TryCreate()
         {
-            BoxShapeArea = Body.ShapeArea as BoxShapeArea;
-            
+            BoxArea = Body.ShapeArea as BoxArea;
+
             this.ValidateMinSize();
             this.ValidateMaxSize();
             this.ValidateMinDensity();
             this.ValidateMaxDensity();
-            
+
             Body.Vertices = CreateVertices();
             Body.Indices = CreateIndices();
             Body.IsTransformUpdateRequired = true;
             Body.TransformedVertices = new Vector2[Body.Vertices.Length];
-            
+
             return true;
+        }
+
+        public override AABBCollision GetAABB()
+        {
+            if (!Body.IsAABBCollisionUpdateRequired)
+            {
+                return Body.AABBCollision;
+            }
+            float minX = float.MaxValue;
+            float minY = float.MaxValue;
+            float maxX = float.MinValue;
+            float maxY = float.MinValue;
+
+            Vector2[] vertices = GetTransformedVertices();
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector2 v = vertices[i];
+                if (v.x < minX)
+                {
+                    minX = v.x;
+                }
+
+                if (v.y < minY)
+                {
+                    minY = v.y;
+                }
+
+                if (v.x > maxX)
+                {
+                    maxX = v.x;
+                }
+
+                if (v.y > maxY)
+                {
+                    maxY = v.y;
+                }
+            }
+            
+            Body.IsAABBCollisionUpdateRequired = false;
+
+            Body.AABBCollision = new AABBCollision(minX, minY, maxX, maxY);
+            return Body.AABBCollision;
         }
 
         public Vector2[] CreateVertices()
         {
-
-            float left = -BoxShapeArea.Width / 2f;
-            float right = left + BoxShapeArea.Width;
-            float bottom = -BoxShapeArea.Height / 2f;
-            float top = bottom + BoxShapeArea.Height;
+            float left = -BoxArea.Width / 2f;
+            float right = left + BoxArea.Width;
+            float bottom = -BoxArea.Height / 2f;
+            float top = bottom + BoxArea.Height;
 
             Vector2[] vertices = new Vector2[4];
             vertices[0] = new Vector2(left, top);
@@ -43,7 +86,7 @@ namespace Physics_Engine.Core.Rigidbody
         {
             if (Body.IsTransformUpdateRequired)
             {
-                Transform transform = new Transform(Body.Position,Body.Rotation);
+                Transform.Transform transform = new Transform.Transform(Position, Rotation);
                 for (int i = 0; i < Body.Vertices.Length; i++)
                 {
                     Vector2 vertex = Body.Vertices[i];

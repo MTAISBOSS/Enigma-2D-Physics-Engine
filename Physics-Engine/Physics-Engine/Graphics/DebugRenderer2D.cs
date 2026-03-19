@@ -45,7 +45,6 @@ namespace Physics_Engine.Graphics
 
             GL.End();
         }
-
         public static void DrawCircle(float r, int segments, bool filled)
         {
             GL.Begin(filled ? PrimitiveType.TriangleFan : PrimitiveType.LineLoop);
@@ -58,7 +57,18 @@ namespace Physics_Engine.Graphics
 
             GL.End();
         }
+        public static void DrawEllipse(float r1,float r2, int segments, bool filled)
+        {
+            GL.Begin(filled ? PrimitiveType.TriangleFan : PrimitiveType.LineLoop);
 
+            for (int i = 0; i < segments; i++)
+            {
+                float a = i / (float)segments * (float)System.Math.PI * 2f;
+                GL.Vertex2(System.Math.Cos(a) * r1, System.Math.Sin(a) * r2);
+            }
+
+            GL.End();
+        }
         public static void DrawPolygon(Vector2[] verts, bool filled)
         {
             GL.Begin(filled ? PrimitiveType.Polygon : PrimitiveType.LineLoop);
@@ -68,7 +78,6 @@ namespace Physics_Engine.Graphics
 
             GL.End();
         }
-
         public static void DrawLine(Vector2 a, Vector2 b)
         {
             GL.Begin(PrimitiveType.Lines);

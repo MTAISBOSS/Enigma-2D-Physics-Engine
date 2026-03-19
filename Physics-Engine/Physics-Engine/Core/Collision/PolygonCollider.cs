@@ -1,0 +1,15 @@
+﻿using Physics_Engine.Math;
+
+namespace Physics_Engine.Core.Collision
+{
+    public class PolygonCollider : Collider
+    {
+        public Vector2[] Vertices { get; set; }
+
+        public override bool Intersects(Collider other, out CollisionInfo collisionInfo)
+        {
+            collisionInfo = new CollisionInfo();
+            return CollisionDetector.Intersect(this, other, out collisionInfo);
+        }
+    }
+}

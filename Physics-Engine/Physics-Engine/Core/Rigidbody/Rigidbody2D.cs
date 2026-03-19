@@ -1,123 +1,80 @@
-﻿using Physics_Engine.Core.Physics_Engine.Core;
+﻿using Physics_Engine.Core.Collision;
+using Physics_Engine.Core.Component_System;
+using Physics_Engine.Core.Physics_2D;
+using Physics_Engine.Core.Transform;
 using Physics_Engine.Math;
 
 namespace Physics_Engine.Core.Rigidbody
 {
     public abstract class Rigidbody2D : ComponentBase, IMovement, IRotation
     {
-        public Body Body { get; private set; }
+        private Vector2 _force = Vector2.Zero;
+        private Transform2D Transform => Owner.Transform;
+        public PhysicsBody Body { get; } = new();
 
-        public class Builder<T> where T : Rigidbody2D, new()
+        public float Rotation
         {
-            private ShapeArea _shapeArea;
-            private Vector2 _position = Vector2.Zero;
-            private Vector2 _linearVelocity = Vector2.Zero;
-            private Vector2 _angularVelocity = Vector2.Zero;
-            private float _rotation;
-            private float _density = 1;
-            private float _bounciness = 1;
-            private float _restitution = 1;
-            private bool _isStatic;
-
-            public Builder<T> WithPosition(Vector2 position)
+            get => Transform.Rotation;
+            set
             {
-                _position = position;
-                return this;
-            }
-
-            public Builder<T> WithRotation(float rotation)
-            {
-                _rotation = rotation;
-                return this;
-            }
-
-            public Builder<T> WithLinearVelocity(Vector2 velocity)
-            {
-                _linearVelocity = velocity;
-                return this;
-            }
-
-            public Builder<T> WithAngularVelocity(Vector2 velocity)
-            {
-                _angularVelocity = velocity;
-                return this;
-            }
-
-            public Builder<T> WithDensity(float density)
-            {
-                _density = density;
-                return this;
-            }
-
-            public Builder<T> WithBounciness(float bounciness)
-            {
-                _bounciness = bounciness;
-                return this;
-            }
-
-            public Builder<T> WithState(bool isStatic)
-            {
-                _isStatic = isStatic;
-                return this;
-            }
-
-            public Builder<T> WithRestitution(float restitution)
-            {
-                _restitution = Mathematics.Clamp(restitution, 0, 1);
-                return this;
-            }
-
-            public Builder<T> WithArea(ShapeArea shapeArea)
-            {
-                _shapeArea = shapeArea;
-                return this;
-            }
-
-            public T Build()
-            {
-                T body = new T
-                {
-                    Body = new Body()
-                    {
-                        Density = _density,
-                        Bounciness = _bounciness,
-                        IsStatic = _isStatic,
-                        Position = _position,
-                        Rotation = _rotation,
-                        LinearVelocity = _linearVelocity,
-                        AngularVelocity = _angularVelocity,
-                        Restitution = _restitution,
-                        ShapeArea = _shapeArea
-                    }
-                };
-                bool isAbleToCreateBody = body.TryCreate();
-                return isAbleToCreateBody ? body : null;
+                Transform.Rotation = value;
+                Body.IsTransformUpdateRequired = true;
             }
         }
-
-        protected abstract bool TryCreate();
-
-        public void Move(Vector2 amount)
+        public Vector2 Position
         {
-            Body.Position += amount;
+            get => Transform.Position;
+            set
+            {
+                Transform.Position = value;
+                Body.IsTransformUpdateRequired = true;
+            }
+        }
+        public abstract bool TryCreate();
+        public abstract AABBCollision GetAABB();
+        public void MoveByAmount(Vector2 amount)
+        {
+            Transform.Translate(amount);
             Body.IsTransformUpdateRequired = true;
         }
 
-        public void MoveTowards(Vector2 position)
+        public void MoveToExactPosition(Vector2 position)
         {
-            Body.Position = position;
+            Transform.Position = position;
             Body.IsTransformUpdateRequired = true;
         }
 
-        public override bool IsAbleToBeCloned()
+        public void RotateByAmount(float amount)
+        {
+            Transform.Rotate(amount);
+            Body.IsTransformUpdateRequired = true;
+        }
+
+        public void Simulate(float time)
+        {
+            if (Body.HasGravity)
+            {
+                Body.LinearVelocity += PhysicsSetting.GravityDirection * time;
+            }
+            else
+            {
+                Body.LinearVelocity += _force / Body.Mass * time;
+            }
+
+            Position += Body.LinearVelocity * time;
+            Rotation += Body.AngularVelocity * time;
+            _force = Vector2.Zero;
+            Body.IsTransformUpdateRequired = true;
+        }
+
+        public void AddForce(Vector2 force)
+        {
+            _force = force;
+        }
+
+        public override bool IsAbleToDuplicate()
         {
             return false;
-        }
-
-        public void Rotate(float amount)
-        {
-            Body.Rotation += amount;
-            Body.IsTransformUpdateRequired = true;
         }
     }
 }

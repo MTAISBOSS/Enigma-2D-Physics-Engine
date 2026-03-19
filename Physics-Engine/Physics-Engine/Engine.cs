@@ -1,24 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
+using OpenTK.Input;
 using Physics_Engine.Core.Collision;
 using Physics_Engine.Core.Input_System;
+using Physics_Engine.Core.Log_System;
 using Physics_Engine.Core.Physics_2D;
 using Physics_Engine.Core.Rigidbody;
+using Physics_Engine.Core.Sample_Physic_Objects;
+using Physics_Engine.Core.Time;
 using Physics_Engine.Graphics;
-using Physics_Engine.Math;
+using Physics_Engine.Graphics.Shapes;
+using Physics_Engine.Utilities;
+using Circle = Physics_Engine.Graphics.Shapes.Circle;
+using Vector2 = Physics_Engine.Math.Vector2;
 
 namespace Physics_Engine
 {
-    public class Engine
+    public static class Engine
     {
         private static readonly List<PhysicsObject> AllObjects = new List<PhysicsObject>();
-        private Dictionary<PhysicsObject, List<CircleShape>> _dots = new Dictionary<PhysicsObject, List<CircleShape>>();
-        private static readonly float moveOffset = 50;
+        private static Dictionary<PhysicsObject, List<Circle>> _dots = new Dictionary<PhysicsObject, List<Circle>>();
+        private static readonly float moveOffset = 5000;
         private static float _dx;
         private static float _dy;
-        private static PhysicsObject _boxPlayer;
+        private static PhysicsObject _player;
+        private static PhysicsWorld _physicsWorld;
+        private static PhysicsObjectContainer _physicsObjectContainer;
 
         public static void Main()
         {
@@ -29,103 +37,146 @@ namespace Physics_Engine
 
         public static void Start()
         {
+            InputSystem.Initialize();
+            Logger.Log("Initialize Engine");
+            _physicsWorld = new PhysicsWorld();
+            _physicsObjectContainer = new PhysicsObjectContainer();
+
+            // CreateRandomBodiesAndPlayer();
+            CreateBackground();
             
-            for (int i = 0; i < 1; i++)
-            {
-                for (int j = 0; j < 1; j++)
-                {
-                    PhysicsObject box = new PhysicsObject("Box");
-                    BoxRigidbody2D boxRigidbody2D = new Rigidbody2D.Builder<BoxRigidbody2D>()
-                        .WithArea(new BoxShapeArea() { Width = 4, Height = 4 })
-                        .WithPosition(new Math.Vector2((i + 1) * 6, (j + 1) * 6))
-                        .Build();
-                    BoxShape boxRenderer = new BoxShape
-                    {
-                        Position = boxRigidbody2D.Body.Position.ConvertFromOpenTk(),
-                        Width = 4,
-                        Height = 4,
-                        Color = Color4.Red,
-                        Layer = 0,
-                        Filled = true
-                    };
+            PhysicsObject ground = new PhysicsObject("Ground");
+            ground.Transform.Position = new Vector2(0, -50);
+            ground.Transform.Scale = new Vector2(200, 10);
 
-                    box.AddComponent(boxRigidbody2D);
-                    box.AddComponent(boxRenderer);
-                    ShapeRenderer.Instance.Renderables.Add(boxRenderer);
-                    AllObjects.Add(box);
-                }
-            }
-
-            BoxShape background = new BoxShape()
+            var groundRb =
+                new RigidbodyBuilder.Builder<BoxRigidbody2D>()
+                    .WithArea(new BoxArea(ground.Transform.Scale.x, ground.Transform.Scale.y))
+                    .WithState(true)
+                    .WithOwner(ground)
+                    .Build();
+            var groundCollider = new PolygonCollider()
             {
-                Color = Color4.Blue,
+                Owner = ground
+            };
+            var groundRenderer = new Rectangle()
+            {
+                Color = Color4.DarkGray,
                 Filled = true,
-                Height = 100,
-                Width = 100,
-                Layer = -1,
-                Owner = null,
-                Position = OpenTK.Vector2.Zero,
-                Rotation = 0
-            };
-            ShapeRenderer.Instance.Renderables.Add(background);
-
-            _boxPlayer = new PhysicsObject("Box Player");
-            BoxRigidbody2D boxPlayerRb = new Rigidbody2D.Builder<BoxRigidbody2D>()
-                .WithArea(new BoxShapeArea() { Width = 4, Height = 4 })
-                .WithPosition(new Math.Vector2(0, 0))
-                .Build();
-            BoxShape boxPlayerRenderer = new BoxShape
-            {
-                Position = boxPlayerRb.Body.Position.ConvertFromOpenTk(),
-                Width = 4,
-                Height = 4,
-                Color = Color4.White,
                 Layer = 0,
-                Filled = true
+                Owner = ground
             };
-
-            _boxPlayer.AddComponent(boxPlayerRb);
-            _boxPlayer.AddComponent(boxPlayerRenderer);
-            ShapeRenderer.Instance.Renderables.Add(boxPlayerRenderer);
-            AllObjects.Add(_boxPlayer);
+            ground.Components.Add(groundRb);
+            ground.Components.Add(groundCollider);
+            ground.Components.Add(groundRenderer);
         }
 
-        public static void Update(object sender, FrameEventArgs e)
+        private static void CreateBackground()
         {
-            _dx += moveOffset * Time.DeltaTimeFloat * InputSystem.GetHorizontal();
-            _dy += moveOffset * Time.DeltaTimeFloat * InputSystem.GetVertical();
-
-            _boxPlayer.GetComponent<BoxRigidbody2D>()?.MoveTowards(new Math.Vector2(_dx, _dy));
-
-            _boxPlayer.GetComponent<BoxShape>()!.Position =
-                _boxPlayer.GetComponent<BoxRigidbody2D>()!.Body.Position.ConvertFromOpenTk();
-
-            AllObjects.ForEach(o =>
-                o.GetComponent<BoxRigidbody2D>()?.Rotate((float)System.Math.PI * Time.DeltaTimeFloat * 10));
-
-            for (int i = 0; i < AllObjects.Count - 1; i++)
+            PhysicsObject background = new PhysicsObject("Background")
             {
-                BoxRigidbody2D boxA = AllObjects[i].GetComponent<BoxRigidbody2D>();
-                for (int j = i + 1; j < AllObjects.Count; j++)
+                Transform =
                 {
-                    BoxRigidbody2D boxB = AllObjects[j].GetComponent<BoxRigidbody2D>();
-                    if (boxB != null && boxA != null && Collider2D.IntersectPolygons(boxA.GetTransformedVertices(),
-                            boxB.GetTransformedVertices(), out Math.Vector2 normal, out float depth))
+                    Scale = new Vector2(ShapeRenderer.Instance.MainCamera.Width,
+                        ShapeRenderer.Instance.MainCamera.Height)
+                }
+            };
+            var backgroundRenderer = new Rectangle()
+            {
+                Color = Color4.DimGray,
+                Filled = true,
+                Layer = -1,
+                Owner = background
+            };
+            background.Components.Add(backgroundRenderer);
+        }
+
+        private static void CreateRandomBodiesAndPlayer()
+        {
+            _player = new Core.Sample_Physic_Objects.Circle("Player");
+            _player.Transform.Position = new Vector2(-60f, 0f);
+            _player.Components.Get<Shape2D>().Color = Color4.Gold;
+            for (int i = -1; i < 1; i++)
+            {
+                for (int j = -2; j < 2; j++)
+                {
+                    Box box = new Box("Box")
                     {
-                        Console.WriteLine("There is collision!");
-                        boxA.Move(-normal * depth / 2f);
-                        boxB.Move(normal * depth / 2f);
+                        Transform =
+                        {
+                            Position = new Vector2(i * 5, j * 5)
+                        }
+                    };
+                    box.Components.Get<Rectangle>().Color = RandomHelper.GetRandomColor();
+                    box.Components.Get<Rigidbody2D>().Body.IsStatic = RandomHelper.GetRandomBoolean();
+                    if (box.Components.Get<Rigidbody2D>().Body.IsStatic)
+                    {
+                        box.Components.Get<Rectangle>().Color = Color4.White;
                     }
                 }
             }
 
+            for (int i = 5; i < 8; i++)
+            {
+                for (int j = -2; j < 2; j++)
+                {
+                    Core.Sample_Physic_Objects.Circle circle = new Core.Sample_Physic_Objects.Circle("Circle")
+                    {
+                        Transform =
+                        {
+                            Position = new Vector2(i * 5, j * 5)
+                        }
+                    };
+                    circle.Components.Get<Circle>().Color = RandomHelper.GetRandomColor();
+                    circle.Components.Get<Rigidbody2D>().Body.IsStatic = RandomHelper.GetRandomBoolean();
+                    if (circle.Components.Get<Rigidbody2D>().Body.IsStatic)
+                    {
+                        circle.Components.Get<Circle>().Color = Color4.White;
+                    }
+                }
+            }
+        }
 
-            AllObjects.ForEach(o =>
-                o.GetComponent<BoxShape>()!.Rotation = o.GetComponent<BoxRigidbody2D>()!.Body.Rotation);
-            AllObjects.ForEach(o =>
-                o.GetComponent<BoxShape>()!.Position =
-                    o.GetComponent<BoxRigidbody2D>()!.Body.Position.ConvertFromOpenTk());
+        public static void Update(object sender, FrameEventArgs e)
+        {
+            //ControlPlayer();
+            //Logger.Log($"[Cursor State] x :{InputSystem.GetMousePositionCursorState().x} y :{InputSystem.GetMousePositionCursorState().y}");
+            if (InputSystem.IsMouseButtonUp(0))
+            {
+                Logger.LogWarning("Up");
+            }
 
+            if (InputSystem.IsMouseButtonDown(0))
+            {
+                Box box = new Box("Box");
+                box.Transform.Position = InputSystem.GetMousePositionCursorState();
+                box.Components.Get<Rigidbody2D>().Body.HasGravity = true;
+                box.Components.Get<Rectangle>().Color = RandomHelper.GetRandomColor();
+            }
+
+            if (InputSystem.IsMouseButtonDown(2))
+            {
+                Physics_Engine.Core.Sample_Physic_Objects.Circle circle =
+                    new Physics_Engine.Core.Sample_Physic_Objects.Circle("Circle");
+                circle.Transform.Position = InputSystem.GetMousePositionCursorState();
+                circle.Components.Get<Rigidbody2D>().Body.HasGravity = true;
+                circle.Components.Get<Circle>().Color = RandomHelper.GetRandomColor();
+            }
+
+            if (InputSystem.IsMouseButtonHeld(0))
+            {
+                Logger.LogError("Hold!!");
+            }
+
+            _physicsWorld.Simulate(Time.DeltaTimeFloat);
+        }
+
+        private static void ControlPlayer()
+        {
+            _dx = moveOffset * Time.DeltaTimeFloat * InputSystem.GetHorizontal();
+            _dy = moveOffset * Time.DeltaTimeFloat * InputSystem.GetVertical();
+
+            _player.Components.Get<Rigidbody2D>().AddForce(new Vector2(_dx, _dy));
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Physics_Engine.Graphics
         }
 
         public readonly List<IRender> Renderables = new List<IRender>();
+        public Camera2D MainCamera { get; set; }
 
         private ShapeRenderer() { }
 
@@ -29,5 +30,11 @@ namespace Physics_Engine.Graphics
 
             DebugRenderer2D.End();
         }
+
+        public void SetCamera(Camera2D camera)
+        {
+            MainCamera = camera;
+        }
+
     }
 }

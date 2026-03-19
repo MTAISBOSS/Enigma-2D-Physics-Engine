@@ -39,5 +39,20 @@
 
             return current;
         }
+
+        public static float DistanceSq(Vector2 a, Vector2 b)
+        {
+            return (float)(System.Math.Pow(a.x - b.x, 2) + System.Math.Pow(a.y - b.y, 2));
+        }
+
+        public static float LengthSq(Vector2 a)
+        {
+            return (float)(System.Math.Pow(a.x, 2) + System.Math.Pow(a.y, 2));
+        }
+
+        public static float Sqrt(float scalar)
+        {
+            return (float)System.Math.Sqrt(scalar);
+        }
     }
 }

@@ -1,57 +1,38 @@
-﻿#nullable enable
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using Component = Physics_Engine.Core.Physics_Engine.Core.Component;
+﻿using Physics_Engine.Core.Component_System;
+using Physics_Engine.Core.Service_Locator;
+using Physics_Engine.Core.Transform;
 
 namespace Physics_Engine.Core.Physics_2D;
 
 public class PhysicsObject
 {
-    private readonly Dictionary<Type, Component> _components = new();
     public string Name { get; }
     public string Tag { get; }
+    private Transform2D _transform;
 
-    public PhysicsObject(string name = "",string tag ="")
+    public Transform2D Transform
     {
-        Tag = tag;
-        Name = name;
-    }
-
-    public T AddComponent<T>(T component) where T : class, Component
-    {
-        var type = typeof(T);
-
-        if (_components.ContainsKey(type))
-            throw new InvalidOperationException($"{type.Name} already exists on {Name}.");
-
-        if (component is ComponentBase baseComp)
-            baseComp.Owner = this;
-
-        _components[type] = component;
-        return component;
-    }
-
-    public bool TryGetComponent<T>(out T? component) where T : class, Component
-    {
-        if (_components.TryGetValue(typeof(T), out var c))
+        get
         {
-            component = (T)c;
-            return true;
+            if (_transform == null)
+            {
+                _transform ??= new Transform2D();
+                Components.Add(_transform);
+            }
+            return _transform;
         }
-
-        component = null;
-        return false;
+        set { _transform = value; }
     }
 
-    public T? GetComponent<T>() where T : class, Component
+    private readonly ComponentContainer _components;
+
+    public PhysicsObject(string name = "", string tag = "")
     {
-        if (TryGetComponent(out T? comp))
-            return comp;
-
-        throw new InvalidOperationException($"{typeof(T).Name} not found on {Name}");
+        Name = name;
+        Tag = tag;
+        _components = new ComponentContainer(this);
+        var physicsSystem = ServiceLocator.Instance.Get<PhysicsObjectContainer>();
+        physicsSystem.RegisterObject(this);
     }
-
-    public bool RemoveComponent<T>() where T : class, Component =>
-        _components.Remove(typeof(T));
+    public ComponentContainer Components => _components;
 }

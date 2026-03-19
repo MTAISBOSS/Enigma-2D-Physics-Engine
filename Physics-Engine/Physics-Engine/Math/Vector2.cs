@@ -1,5 +1,6 @@
 ﻿using System;
 using Physics_Engine.Core;
+using Physics_Engine.Core.Transform;
 
 namespace Physics_Engine.Math
 {
@@ -24,6 +25,7 @@ namespace Physics_Engine.Math
         public static Vector2 operator +(Vector2 a, Vector2 b) => new Vector2(a.x + b.x, a.y + b.y);
         public static Vector2 operator -(Vector2 a, Vector2 b) => new Vector2(a.x - b.x, a.y - b.y);
         public static Vector2 operator *(Vector2 a, float scalar) => new Vector2(a.x * scalar, a.y * scalar);
+        public static Vector2 operator *(float scalar,Vector2 a) => new Vector2(a.x * scalar, a.y * scalar);
         public static Vector2 operator /(Vector2 a, float scalar)
         {
             if (scalar == 0)

@@ -1,0 +1,27 @@
+﻿using OpenTK.Graphics.OpenGL;
+
+namespace Physics_Engine.Graphics.Shapes
+{
+    public class Rectangle : Shape2D
+    {
+        public float Width => Owner.Transform.Scale.x;
+        public float Height => Owner.Transform.Scale.y;
+
+        public Rectangle()
+        {
+            ShapeRenderer.Instance.Renderables.Add(this);
+        }
+
+        ~Rectangle()
+        {
+            ShapeRenderer.Instance.Renderables.Remove(this);
+        }
+        public override void Draw()
+        {
+            GL.Color4(Color);
+            DebugRenderer2D.Push(Position.X, Position.Y, Rotation);
+            DebugRenderer2D.DrawBox(Width, Height, Filled);
+            DebugRenderer2D.Pop();
+        }
+    }
+}
