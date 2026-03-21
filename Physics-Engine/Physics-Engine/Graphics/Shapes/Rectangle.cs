@@ -20,7 +20,7 @@ namespace Physics_Engine.Graphics.Shapes
         {
             GL.Color4(Color);
             DebugRenderer2D.Push(Position.X, Position.Y, Rotation);
-            DebugRenderer2D.DrawBox(Width, Height, Filled);
+            DebugRenderer2D.DrawRect(Width, Height, Filled);
             DebugRenderer2D.Pop();
         }
     }

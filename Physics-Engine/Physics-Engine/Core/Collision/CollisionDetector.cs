@@ -5,47 +5,43 @@ using Physics_Engine.Utilities;
 
 namespace Physics_Engine.Core.Collision
 {
-    public static class CollisionDetector
+    public struct CollisionDetector
     {
-        public static bool Intersect(Collider colliderA, Collider colliderB, out CollisionInfo collisionInfo)
+        public static bool Intersect(Rigidbody2D bodyA, Rigidbody2D bodyB, out CollisionInfo collisionInfo)
         {
             collisionInfo = new CollisionInfo();
-            if ((colliderA.Position - colliderB.Position).Equals(Vector2.Zero))
+            if ((bodyA.Position - bodyB.Position).Equals(Vector2.Zero))
             {
                 collisionInfo.Depth =
-                    System.Math.Min(colliderA.Owner.Components.Get<Rigidbody2D>().Body.ShapeArea.Calculate(),
-                        colliderB.Owner.Components.Get<Rigidbody2D>().Body.ShapeArea.Calculate());
+                    System.Math.Min(bodyA.Body.ShapeArea.Calculate(),
+                        bodyB.Body.ShapeArea.Calculate());
                 collisionInfo.Normal =
                     new Vector2(RandomHelper.GetRandomFloat(0, 1), RandomHelper.GetRandomFloat(0, 1));
                 return true;
             }
 
-            if (colliderA is CircleCollider && colliderB is CircleCollider)
+            if (bodyA is CircleRigidbody2D && bodyB is CircleRigidbody2D)
             {
-                return IntersectCircles(colliderA.Owner.Components.Get<CircleRigidbody2D>(),
-                    colliderB.Owner.Components.Get<CircleRigidbody2D>(), out collisionInfo);
+                return IntersectCircles(bodyA as CircleRigidbody2D, (CircleRigidbody2D)bodyB, out collisionInfo);
             }
 
-            if (colliderA is CircleCollider && colliderB is PolygonCollider)
+            if (bodyA is CircleRigidbody2D && bodyB is BoxRigidbody2D)
             {
-                return IntersectCircleWithPolygon(colliderA.Owner.Components.Get<CircleRigidbody2D>(),
-                    colliderB.Owner.Components.Get<BoxRigidbody2D>(), out collisionInfo);
+                return IntersectCircleWithPolygon(bodyA as CircleRigidbody2D, bodyB as BoxRigidbody2D,
+                    out collisionInfo);
             }
 
-            if (colliderA is PolygonCollider && colliderB is CircleCollider)
+            if (bodyA is BoxRigidbody2D && bodyB is CircleRigidbody2D)
             {
-                bool result = IntersectCircleWithPolygon(colliderB.Owner.Components.Get<CircleRigidbody2D>(),
-                    colliderA.Owner.Components.Get<BoxRigidbody2D>(), out collisionInfo);
-
+                bool result = IntersectCircleWithPolygon(bodyB as CircleRigidbody2D, bodyA as BoxRigidbody2D,
+                    out collisionInfo);
                 collisionInfo.Normal = -collisionInfo.Normal;
                 return result;
             }
 
-            if (colliderA is PolygonCollider && colliderB is PolygonCollider)
+            if (bodyA is BoxRigidbody2D && bodyB is BoxRigidbody2D)
             {
-                return IntersectPolygons(
-                    colliderA.Owner.Components.Get<BoxRigidbody2D>(),
-                    colliderB.Owner.Components.Get<BoxRigidbody2D>(), out collisionInfo);
+                return IntersectPolygons(bodyA as BoxRigidbody2D, bodyB as BoxRigidbody2D, out collisionInfo);
             }
 
             collisionInfo = new CollisionInfo();
@@ -255,20 +251,6 @@ namespace Physics_Engine.Core.Collision
             }
         }
 
-        private static Vector2 FindArithmeticMean(Vector2[] vertices)
-        {
-            float sumX = 0f;
-            float sumY = 0f;
-
-            for (int i = 0; i < vertices.Length; i++)
-            {
-                sumX += vertices[i].x;
-                sumY += vertices[i].y;
-            }
-
-            return new Vector2(sumX / vertices.Length, sumY / vertices.Length);
-        }
-
         private static void ProjectVertices(Vector2[] vertices, Vector2 axis, out float min, out float max)
         {
             max = float.MinValue;
@@ -289,7 +271,6 @@ namespace Physics_Engine.Core.Collision
                 }
             }
         }
-
         #endregion
     }
 }

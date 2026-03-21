@@ -24,7 +24,7 @@ namespace Physics_Engine.Core.Rigidbody
         public Vector2[] TransformedVertices { get; set; }
         public bool IsTransformUpdateRequired = true;
         public int[] Indices { get; set; }
-        public AABBCollision AABBCollision;
-        public bool IsAABBCollisionUpdateRequired = true;
+        public AABBCollision AABBCollision { get; set; }
+        public bool IsAabbCollisionUpdateRequired = true;
     }
 }

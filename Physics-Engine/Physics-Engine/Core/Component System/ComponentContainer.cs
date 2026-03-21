@@ -58,8 +58,6 @@ public class ComponentContainer
         return null;
     }
 
-
-
     public IEnumerable<T> GetAll<T>() where T : IComponent =>
         _components.TryGetValue(typeof(T), out var list)
             ? list.OfType<T>()

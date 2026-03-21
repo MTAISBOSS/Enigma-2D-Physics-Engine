@@ -36,22 +36,31 @@ namespace Physics_Engine.Core.Rigidbody
         {
             Transform.Translate(amount);
             Body.IsTransformUpdateRequired = true;
+            Body.IsAabbCollisionUpdateRequired = true;
         }
 
         public void MoveToExactPosition(Vector2 position)
         {
             Transform.Position = position;
             Body.IsTransformUpdateRequired = true;
+            Body.IsAabbCollisionUpdateRequired = true;
         }
 
         public void RotateByAmount(float amount)
         {
             Transform.Rotate(amount);
             Body.IsTransformUpdateRequired = true;
+            Body.IsAabbCollisionUpdateRequired = true;
         }
 
         public void Simulate(float time)
         {
+            if (Body.IsStatic)
+            {
+                return;
+            }
+
+            time /= PhysicsSetting.Iterations;
             if (Body.HasGravity)
             {
                 Body.LinearVelocity += PhysicsSetting.GravityDirection * time;
@@ -65,6 +74,7 @@ namespace Physics_Engine.Core.Rigidbody
             Rotation += Body.AngularVelocity * time;
             _force = Vector2.Zero;
             Body.IsTransformUpdateRequired = true;
+            Body.IsAabbCollisionUpdateRequired = true;
         }
 
         public void AddForce(Vector2 force)

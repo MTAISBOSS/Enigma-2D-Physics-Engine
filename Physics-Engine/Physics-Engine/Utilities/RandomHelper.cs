@@ -3,7 +3,7 @@ using System;
 
 namespace Physics_Engine.Utilities;
 
-public static class RandomHelper
+public struct RandomHelper
 {
     private static readonly Random _rand = new Random();
 

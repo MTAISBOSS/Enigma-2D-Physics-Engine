@@ -5,8 +5,12 @@ namespace Physics_Engine.Core.Collision;
 
 public static class CollisionResolver
 {
-    public static void Resolve(Rigidbody2D bodyA, Rigidbody2D bodyB, CollisionInfo collisionInfo)
+    public static void Resolve(in CollisionManifold contact)
     {
+        var bodyA = contact.BodyA;
+        var bodyB = contact.BodyB;
+        var collisionInfo = contact.CollisionInfo;
+
         Vector2 relativeVelocity = bodyB.Body.LinearVelocity - bodyA.Body.LinearVelocity;
 
         bool isNormalAndVelocityInSameDirection = Mathematics.DotProduct(relativeVelocity, collisionInfo.Normal) > 0f;

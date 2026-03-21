@@ -2,7 +2,7 @@
 
 namespace Physics_Engine.Core.Collision;
 
-public class AABBCollision
+public struct AABBCollision
 {
     public readonly Vector2 Min;
     public readonly Vector2 Max;

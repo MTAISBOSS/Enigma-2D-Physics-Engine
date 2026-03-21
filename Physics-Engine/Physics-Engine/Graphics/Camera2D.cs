@@ -34,5 +34,20 @@ namespace Physics_Engine.Graphics
             GL.LoadIdentity();
             GL.Translate(-Position.X, -Position.Y, 0);
         }
+
+        public Math.Vector2 ScreenToWorldPoint(Vector2 screenSize, Vector2 screenPos)
+        {
+            float ndcX = (screenPos.X / screenSize.X) * 2f - 1f;
+            float ndcY = 1f - (screenPos.Y / screenSize.Y) * 2f; 
+
+            float worldX = Left   + (ndcX + 1f) * 0.5f * (Right - Left);
+            float worldY = Bottom + (ndcY + 1f) * 0.5f * (Top - Bottom);
+
+            worldX += Position.X;
+            worldY += Position.Y;
+
+            return new Math.Vector2(worldX, worldY);
+        }
+
     }
 }

@@ -26,7 +26,7 @@ namespace Physics_Engine.Core.Rigidbody
 
         public override AABBCollision GetAABB()
         {
-            if (!Body.IsAABBCollisionUpdateRequired)
+            if (!Body.IsAabbCollisionUpdateRequired)
             {
                 return Body.AABBCollision;
             }
@@ -60,7 +60,7 @@ namespace Physics_Engine.Core.Rigidbody
                 }
             }
             
-            Body.IsAABBCollisionUpdateRequired = false;
+            Body.IsAabbCollisionUpdateRequired = false;
 
             Body.AABBCollision = new AABBCollision(minX, minY, maxX, maxY);
             return Body.AABBCollision;

@@ -1,173 +1,142 @@
-﻿using OpenTK.Input;
-using Physics_Engine.Math;
+﻿using OpenTK;
+using OpenTK.Input;
+using Physics_Engine.Core.Log_System;
+using Vector2 = Physics_Engine.Math.Vector2;
 
 namespace Physics_Engine.Core.Input_System;
 
-public static class InputSystem
+public struct InputSystem
 {
     private static KeyboardState _keyboardState;
     private static MouseState _mouseState;
     private static InputBinding _inputBinding;
-    private static bool _isMouseButtonPressed;
+    
+    private static MouseState _prevMouseState;
+    private static KeyboardState _prevKeyboardState;
 
-    public static void Initialize()
+    private static GameWindow _gameWindow;
+
+    public static void Initialize(GameWindow gameWindow)
     {
         _inputBinding = new InputBinding();
+        _gameWindow = gameWindow;
+
+        _gameWindow.MouseDown += OnMouseDown;
+        _gameWindow.MouseUp += OnMouseUp;
+        _gameWindow.MouseMove += OnMouseMove;
+        _gameWindow.MouseWheel += OnMouseWheel;
+
+        _gameWindow.KeyDown += OnKeyDown;
+        _gameWindow.KeyUp += OnKeyUp;
+        
+        _keyboardState = Keyboard.GetState();
+        _mouseState = Mouse.GetState();
+        Logger.Log("Input system Initialized");
     }
+
+    #region Event Handlers
+
+    private static void OnKeyDown(object sender, KeyboardKeyEventArgs e)
+    {
+        _prevKeyboardState = _keyboardState;
+        _keyboardState = e.Keyboard;
+    }
+
+    private static void OnKeyUp(object sender, KeyboardKeyEventArgs e)
+    {
+        _prevKeyboardState = _keyboardState;
+        _keyboardState = e.Keyboard;
+    }
+
+    private static void OnMouseDown(object sender, MouseButtonEventArgs e)
+    {
+        _prevMouseState = _mouseState;
+        _mouseState = e.Mouse;
+    }
+
+    private static void OnMouseUp(object sender, MouseButtonEventArgs e)
+    {
+        _prevMouseState = _mouseState;
+        _mouseState = e.Mouse;
+    }
+
+    private static void OnMouseMove(object sender, MouseMoveEventArgs e)
+    {
+        _mouseState = e.Mouse;
+    }
+
+    private static void OnMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        _mouseState = e.Mouse;
+    }
+
+    #endregion
+
+    #region Key Logic
 
     public static bool IsKeyDown(Key key)
     {
-        _keyboardState = Keyboard.GetState();
         return _keyboardState.IsKeyDown(key);
+    }
+
+    public static bool IsKeyPressed(Key key)
+    {
+        return _keyboardState.IsKeyDown(key) && !_prevKeyboardState.IsKeyDown(key);
     }
 
     public static bool IsKeyUp(Key key)
     {
-        _keyboardState = Keyboard.GetState();
         return _keyboardState.IsKeyUp(key);
     }
 
     public static float GetHorizontal()
     {
         var keys = InputBinding.AllActions["Horizontal"];
-        _keyboardState = Keyboard.GetState();
-        if (_keyboardState.IsKeyDown(keys[0]) || _keyboardState.IsKeyDown(keys[2]))
-        {
-            return -1;
-        }
-
-        if (_keyboardState.IsKeyDown(keys[1]) || _keyboardState.IsKeyDown(keys[3]))
-        {
-            return 1;
-        }
-
+        if (_keyboardState.IsKeyDown(keys[0]) || _keyboardState.IsKeyDown(keys[2])) return -1;
+        if (_keyboardState.IsKeyDown(keys[1]) || _keyboardState.IsKeyDown(keys[3])) return 1;
         return 0;
     }
 
     public static float GetVertical()
     {
         var keys = InputBinding.AllActions["Vertical"];
-        _keyboardState = Keyboard.GetState();
-        if (_keyboardState.IsKeyDown(keys[0]) || _keyboardState.IsKeyDown(keys[2]))
-        {
-            return -1;
-        }
-
-        if (_keyboardState.IsKeyDown(keys[1]) || _keyboardState.IsKeyDown(keys[3]))
-        {
-            return 1;
-        }
-
+        if (_keyboardState.IsKeyDown(keys[0]) || _keyboardState.IsKeyDown(keys[2])) return -1;
+        if (_keyboardState.IsKeyDown(keys[1]) || _keyboardState.IsKeyDown(keys[3])) return 1;
         return 0;
     }
 
+    #endregion
+
+    #region Mouse Logic
+
     public static Vector2 GetMousePositionCursorState()
     {
-        _mouseState = Mouse.GetCursorState();
-        return new Vector2(_mouseState.X, _mouseState.Y);
+        var cursor = Mouse.GetCursorState();
+        return new Vector2(cursor.X, cursor.Y);
     }
 
     public static Vector2 GetMousePosition()
     {
-        _mouseState = Mouse.GetState();
         return new Vector2(_mouseState.X, _mouseState.Y);
     }
 
-    /// <summary>
-    /// returns the state of the pressed button on mouse
-    /// 0 is lmb
-    /// 1 is mmb
-    /// 2 is rmb
-    /// </summary>
-    /// <param name="button"></param>
-    /// <returns></returns>
     public static bool IsMouseButtonDown(int button)
     {
-        if (_isMouseButtonPressed)
-        {
-            return false;
-        }
-        _mouseState = Mouse.GetCursorState();
-        if (button == 0 && _mouseState.LeftButton == ButtonState.Pressed)
-        {
-            _isMouseButtonPressed = true;
-            return true;
-        }
-
-        if (button == 1 && _mouseState.MiddleButton == ButtonState.Pressed)
-        {
-            _isMouseButtonPressed = true;
-            return true;
-        }
-
-        if (button == 2 && _mouseState.RightButton == ButtonState.Pressed)
-        {
-            _isMouseButtonPressed = true;
-            return true;
-        }
-
-        return false;
+        MouseButton btn = (MouseButton)button;
+        return _mouseState.IsButtonDown(btn) && !_prevMouseState.IsButtonDown(btn);
     }
 
-    /// <summary>
-    /// returns the state of the released button on mouse
-    /// 0 is lmb
-    /// 1 is mmb
-    /// 2 is rmb
-    /// </summary>
-    /// <param name="button"></param>
-    /// <returns></returns>
     public static bool IsMouseButtonUp(int button)
     {
-        if (!_isMouseButtonPressed)
-        {
-            return false;
-        }
-        _mouseState = Mouse.GetCursorState();
-        if (button == 0 && _mouseState.LeftButton == ButtonState.Released)
-        {
-            _isMouseButtonPressed = false;
-            return true;
-        }
+        MouseButton btn = (MouseButton)button;
+        return _mouseState.IsButtonUp(btn) && _prevMouseState.IsButtonDown(btn);
+    }
 
-        if (button == 1 && _mouseState.MiddleButton == ButtonState.Released)
-        {
-            _isMouseButtonPressed = false;
-            return true;
-        }
-
-        if (button == 2 && _mouseState.RightButton == ButtonState.Released)
-        {
-            _isMouseButtonPressed = false;
-            return true;
-        }
-
-        return false;
-    }  /// <summary>
-    /// returns the state of the released button on mouse
-    /// 0 is lmb
-    /// 1 is mmb
-    /// 2 is rmb
-    /// </summary>
-    /// <param name="button"></param>
-    /// <returns></returns>
     public static bool IsMouseButtonHeld(int button)
     {
-        _mouseState = Mouse.GetCursorState();
-        if (button == 0 && _mouseState.LeftButton == ButtonState.Pressed)
-        {
-            return true;
-        }
-
-        if (button == 1 && _mouseState.MiddleButton == ButtonState.Pressed)
-        {
-            return true;
-        }
-
-        if (button == 2 && _mouseState.RightButton == ButtonState.Pressed)
-        {
-            return true;
-        }
-        return false;
+        MouseButton btn = (MouseButton)button;
+        return _mouseState.IsButtonDown(btn);
     }
+
+    #endregion
 }

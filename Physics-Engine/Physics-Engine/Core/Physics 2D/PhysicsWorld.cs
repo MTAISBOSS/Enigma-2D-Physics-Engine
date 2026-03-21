@@ -2,15 +2,19 @@
 using Physics_Engine.Core.Collision;
 using Physics_Engine.Core.Rigidbody;
 using Physics_Engine.Core.Service_Locator;
+using Physics_Engine.Graphics;
+using Physics_Engine.Math;
 
 namespace Physics_Engine.Core.Physics_2D
 {
     public class PhysicsWorld : IService
     {
         private readonly List<Rigidbody2D> _rigidbody2Ds = new List<Rigidbody2D>();
-        private Collider _colliderA;
-        private Collider _colliderB;
-
+        private readonly List<CollisionManifold> _contacts = new List<CollisionManifold>();
+        private Rigidbody2D _bodyA;
+        private Rigidbody2D _bodyB;
+        public readonly List<Vector2> ContactPoints = new List<Vector2>();
+        public int BodyCount => _rigidbody2Ds.Count;
         public PhysicsWorld()
         {
             ServiceLocator.Instance.Register(this);
@@ -39,43 +43,75 @@ namespace Physics_Engine.Core.Physics_2D
 
         public void Simulate(float time)
         {
-            SimulateMovement(time);
-            SimulateCollision();
+            for (int i = 0; i < PhysicsSetting.Iterations; i++)
+            {
+                SimulateMovement(time);
+                SimulateCollision();
+            }
+            RemoveOutOfSightBodies();
+        }
+
+        private void RemoveOutOfSightBodies()
+        {
+            for (int i = 0; i < _rigidbody2Ds.Count; i++)
+            {
+                if (_rigidbody2Ds[i].GetAABB().Max.y < ShapeRenderer.Instance.MainCamera.Bottom)
+                {
+                    UnregisterRigidbody(_rigidbody2Ds[i]);
+                }
+            }
         }
 
         private void SimulateCollision()
         {
+            _contacts.Clear();
+            ContactPoints.Clear();
             for (int i = 0; i < _rigidbody2Ds.Count - 1; i++)
             {
-                _colliderA = _rigidbody2Ds[i].Owner.Components.Get<Collider>();
+                _bodyA = _rigidbody2Ds[i];
                 for (int j = i + 1; j < _rigidbody2Ds.Count; j++)
                 {
-                    _colliderB = _rigidbody2Ds[j].Owner.Components.Get<Collider>();
-                    if (CollisionDetector.Intersect(_colliderA, _colliderB, out CollisionInfo info))
+                    _bodyB = _rigidbody2Ds[j];
+                    if (CollisionDetector.Intersect(_bodyA, _bodyB, out CollisionInfo info))
                     {
-                        Rigidbody2D bodyA = _colliderA.Owner.Components.Get<Rigidbody2D>();
-                        Rigidbody2D bodyB = _colliderB.Owner.Components.Get<Rigidbody2D>();
-                        if (bodyA.Body.IsStatic && bodyB.Body.IsStatic)
+                        if (_bodyA.Body.IsStatic && _bodyB.Body.IsStatic)
                         {
                             continue;
                         }
 
-                        if (bodyA.Body.IsStatic)
+                        if (_bodyA.Body.IsStatic)
                         {
-                            bodyB.MoveByAmount(info.Normal * info.Depth);
+                            _bodyB.MoveByAmount(info.Normal * info.Depth);
                         }
-                        else if (bodyB.Body.IsStatic)
+                        else if (_bodyB.Body.IsStatic)
                         {
-                            bodyA.MoveByAmount(-info.Normal * info.Depth);
+                            _bodyA.MoveByAmount(-info.Normal * info.Depth);
                         }
                         else
                         {
-                            bodyA.MoveByAmount(-info.Normal * info.Depth / 2f);
-                            bodyB.MoveByAmount(info.Normal * info.Depth / 2f);
+                            _bodyA.MoveByAmount(-info.Normal * info.Depth / 2f);
+                            _bodyB.MoveByAmount(info.Normal * info.Depth / 2f);
                         }
 
+                        ContactDetector.FindContactPoints(_bodyA,_bodyB,out Vector2 contact1,out Vector2 contact2,out int contactCount);
+                        CollisionManifold contact =
+                            new CollisionManifold(_bodyA, _bodyB, info, contact1, contact2, contactCount);
+                        _contacts.Add(contact);
 
-                        CollisionResolver.Resolve(bodyA, bodyB, info);
+                    }
+                }
+            }
+
+            for (int i = 0; i < _contacts.Count; i++)
+            {
+                CollisionManifold contact = _contacts[i];
+                CollisionResolver.Resolve(in contact);
+                if (contact.ContactCount>0)
+                {
+                    ContactPoints.Add(contact.Contact1);
+                    if (contact.ContactCount > 1)
+                    {
+                        ContactPoints.Add(contact.Contact2);
                     }
                 }
             }
@@ -83,9 +119,9 @@ namespace Physics_Engine.Core.Physics_2D
 
         private void SimulateMovement(float time)
         {
-            for (int i = 0; i < _rigidbody2Ds.Count; i++)
+            foreach (var rigidbody in _rigidbody2Ds)
             {
-                _rigidbody2Ds[i].Simulate(time);
+                rigidbody.Simulate(time);
             }
         }
     }

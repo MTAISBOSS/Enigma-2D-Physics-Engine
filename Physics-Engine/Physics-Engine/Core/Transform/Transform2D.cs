@@ -6,19 +6,16 @@ namespace Physics_Engine.Core.Transform
     public class Transform2D : ComponentBase
     {
         public Vector2 Position { get; set; } = new(0, 0);
-        public float Rotation { get; set; } = 0f;
-        public Vector2 Scale { get; set; } = new(1, 1);
-
+        public Vector2 Scale { get; set; } = Vector2.One;
+        public float Rotation { get; set; }
         public void Translate(Vector2 delta)
         {
             Position += delta;
         }
-
         public void Rotate(float deltaAngle)
         {
             Rotation += deltaAngle;
         }
-
         public override bool IsAbleToDuplicate() => false;
     }
 }

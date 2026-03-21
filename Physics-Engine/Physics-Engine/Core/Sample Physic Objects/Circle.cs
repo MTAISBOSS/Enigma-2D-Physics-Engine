@@ -1,5 +1,4 @@
-﻿using OpenTK.Graphics;
-using Physics_Engine.Core.Collision;
+﻿using Physics_Engine.Core.Collision;
 using Physics_Engine.Core.Physics_2D;
 using Physics_Engine.Core.Rigidbody;
 
@@ -22,7 +21,7 @@ public class Circle : PhysicsObject
         {
             Filled = true,
             Radius = Transform.Scale.x,
-            Layer = 1,
+            RenderOrder = 1,
             Owner = this,
         };
         var rigidbody2D = new RigidbodyBuilder.Builder<CircleRigidbody2D>()

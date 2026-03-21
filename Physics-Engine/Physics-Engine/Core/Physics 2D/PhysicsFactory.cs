@@ -2,7 +2,7 @@
 
 namespace Physics_Engine.Core.Physics_2D;
 
-public static class PhysicsFactory
+public struct PhysicsFactory
 {
     public static T Create<T>(string name = "", string tag = "") where T : PhysicsObject, new()
     {

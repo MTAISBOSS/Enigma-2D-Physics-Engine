@@ -2,7 +2,7 @@
 
 namespace Physics_Engine.Core.Time
 {
-    public static class Time
+    public struct Time
     {
         public static double ElapsedTime { get; private set; } = 0.0;
         public static double DeltaTime { get; private set; } = 0.0;

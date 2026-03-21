@@ -3,7 +3,7 @@ using OpenTK.Input;
 
 namespace Physics_Engine.Core.Input_System;
 
-internal class InputBinding
+internal struct InputBinding
 {
     public static readonly Dictionary<string, Key[]> AllActions = new Dictionary<string, Key[]>();
     public InputBinding()

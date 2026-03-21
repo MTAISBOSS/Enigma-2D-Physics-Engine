@@ -9,7 +9,6 @@ public class PhysicsObject
     public string Name { get; }
     public string Tag { get; }
     private Transform2D _transform;
-
     public Transform2D Transform
     {
         get
@@ -23,9 +22,7 @@ public class PhysicsObject
         }
         set { _transform = value; }
     }
-
     private readonly ComponentContainer _components;
-
     public PhysicsObject(string name = "", string tag = "")
     {
         Name = name;

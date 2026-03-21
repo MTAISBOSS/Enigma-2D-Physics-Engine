@@ -1,4 +1,5 @@
-﻿using Physics_Engine.Math;
+﻿using Physics_Engine.Core.Rigidbody;
+using Physics_Engine.Math;
 
 namespace Physics_Engine.Core.Collision
 {
@@ -9,7 +10,7 @@ namespace Physics_Engine.Core.Collision
         public override bool Intersects(Collider other, out CollisionInfo collisionInfo)
         {
             collisionInfo = new CollisionInfo();
-            return CollisionDetector.Intersect(this, other, out collisionInfo);
+            return CollisionDetector.Intersect(Owner.Components.Get<Rigidbody2D>(), other.Owner.Components.Get<Rigidbody2D>(), out collisionInfo);
         }
     }
 }

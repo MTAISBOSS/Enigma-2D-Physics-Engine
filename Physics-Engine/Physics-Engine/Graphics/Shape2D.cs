@@ -13,15 +13,15 @@ public abstract class Shape2D : ComponentBase, IRender
 
     public bool Filled = false;
     public Color4 Color = Color4.White;
-    public int Layer = 0;
-
+    public int RenderOrder = 0;
+    public LayerMask Layer;
     public virtual Vector2 Position => Transform.Position.ConvertFromOpenTk();
     public virtual Vector2 Scale => Transform.Scale.ConvertFromOpenTk();
     public virtual float Rotation => Transform.Rotation;
 
     public int GetSortingOrder()
     {
-        return Layer;
+        return RenderOrder;
     }
 
     public abstract void Draw();

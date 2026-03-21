@@ -67,6 +67,11 @@ public class RigidbodyBuilder
         {
             _instance.Owner = owner;
             return this;
+        } 
+        public Builder<T> WithGravityState(bool hasGravity)
+        {
+            _instance.Body.HasGravity = hasGravity;
+            return this;
         }
         public T Build()
         {

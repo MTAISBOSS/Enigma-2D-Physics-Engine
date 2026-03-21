@@ -24,7 +24,7 @@ namespace Physics_Engine.Graphics
         public void Render()
         {
             DebugRenderer2D.Begin();
-
+            
             foreach (var r in Renderables.OrderBy(r => r.GetSortingOrder()))
                 r.Draw();
 

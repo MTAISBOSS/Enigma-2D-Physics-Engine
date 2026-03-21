@@ -4,7 +4,7 @@ namespace Physics_Engine.Core.Rigidbody
 {
     public class CircleRigidbody2D : Rigidbody2D
     {
-        private CircleArea CircleArea { get; set; }
+        public CircleArea CircleArea { get; set; }
 
         public override bool TryCreate()
         {
@@ -18,7 +18,7 @@ namespace Physics_Engine.Core.Rigidbody
 
         public override AABBCollision GetAABB()
         {
-            if (!Body.IsAABBCollisionUpdateRequired)
+            if (!Body.IsAabbCollisionUpdateRequired)
             {
                 return Body.AABBCollision;
             }
@@ -27,7 +27,7 @@ namespace Physics_Engine.Core.Rigidbody
             var maxX = Position.x + CircleArea.Radius;
             var maxY = Position.y + CircleArea.Radius;
             
-            Body.IsAABBCollisionUpdateRequired = false;
+            Body.IsAabbCollisionUpdateRequired = false;
             
             Body.AABBCollision = new AABBCollision(minX, minY, maxX, maxY);
             return Body.AABBCollision;
