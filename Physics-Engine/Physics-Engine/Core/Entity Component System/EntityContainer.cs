@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Physics_Engine.Core.Service_Locator;
 
-namespace Physics_Engine.Core.Physics_2D;
+namespace Physics_Engine.Core.Entity_Component_System;
 
 public class EntityContainer : IService
 {

@@ -1,5 +1,5 @@
 ﻿using OpenTK.Graphics;
-using Physics_Engine.Core.Component_System;
+using Physics_Engine.Core.Entity_Component_System;
 using Physics_Engine.Core.Physics_2D;
 using Physics_Engine.Core.Transform;
 using Physics_Engine.Utilities;

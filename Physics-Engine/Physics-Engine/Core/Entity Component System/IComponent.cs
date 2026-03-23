@@ -1,4 +1,4 @@
-﻿namespace Physics_Engine.Core.Component_System
+﻿namespace Physics_Engine.Core.Entity_Component_System
 {
     public interface IComponent
     {

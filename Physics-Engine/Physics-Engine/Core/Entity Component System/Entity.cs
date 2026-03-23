@@ -1,8 +1,6 @@
-﻿using Physics_Engine.Core.Component_System;
-using Physics_Engine.Core.Service_Locator;
-using Physics_Engine.Core.Transform;
+﻿using Physics_Engine.Core.Service_Locator;
 
-namespace Physics_Engine.Core.Physics_2D;
+namespace Physics_Engine.Core.Entity_Component_System;
 
 public class Entity
 {

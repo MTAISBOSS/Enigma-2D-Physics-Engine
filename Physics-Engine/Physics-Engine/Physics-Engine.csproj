@@ -54,9 +54,12 @@
         <Compile Include="Core\Collision\CollisionResolver.cs" />
         <Compile Include="Core\Collision\ContactDetector.cs" />
         <Compile Include="Core\Collision\PolygonCollider.cs" />
-        <Compile Include="Core\Component System\ComponentContainer.cs" />
-        <Compile Include="Core\Component System\IComponent.cs" />
-        <Compile Include="Core\Component System\Component.cs" />
+        <Compile Include="Core\Entity Component System\ComponentContainer.cs" />
+        <Compile Include="Core\Entity Component System\Entity.cs" />
+        <Compile Include="Core\Entity Component System\EntityContainer.cs" />
+        <Compile Include="Core\Entity Component System\EntityFactory.cs" />
+        <Compile Include="Core\Entity Component System\IComponent.cs" />
+        <Compile Include="Core\Entity Component System\Component.cs" />
         <Compile Include="Core\Input System\InputBinding.cs" />
         <Compile Include="Core\Input System\InputSystem.cs" />
         <Compile Include="Core\Interfaces\IIndices.cs" />
@@ -64,10 +67,7 @@
         <Compile Include="Core\Interfaces\IRotation.cs" />
         <Compile Include="Core\Interfaces\IVertices.cs" />
         <Compile Include="Core\Log System\Logger.cs" />
-        <Compile Include="Core\Physics 2D\EntityContainer.cs" />
         <Compile Include="Core\Physics 2D\PhysicsContext.cs" />
-        <Compile Include="Core\Physics 2D\EntityFactory.cs" />
-        <Compile Include="Core\Physics 2D\Entity.cs" />
         <Compile Include="Core\Physics 2D\PhysicsSetting.cs" />
         <Compile Include="Core\Rigidbody\RigidbodyBuilder.cs" />
         <Compile Include="Core\Rigidbody\ShapeArea.cs" />

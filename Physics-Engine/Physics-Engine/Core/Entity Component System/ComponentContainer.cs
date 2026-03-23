@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Physics_Engine.Core.Log_System;
-using Physics_Engine.Core.Physics_2D;
 
-namespace Physics_Engine.Core.Component_System;
+namespace Physics_Engine.Core.Entity_Component_System;
 
 public class ComponentContainer
 {

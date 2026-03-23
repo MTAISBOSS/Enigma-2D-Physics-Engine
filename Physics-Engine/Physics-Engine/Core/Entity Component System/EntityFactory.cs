@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Physics_Engine.Core.Physics_2D;
+namespace Physics_Engine.Core.Entity_Component_System;
 
 public struct EntityFactory
 {

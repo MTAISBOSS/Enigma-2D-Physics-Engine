@@ -1,4 +1,4 @@
-﻿using Physics_Engine.Core.Component_System;
+﻿using Physics_Engine.Core.Entity_Component_System;
 using Physics_Engine.Math;
 
 namespace Physics_Engine.Core.Transform
