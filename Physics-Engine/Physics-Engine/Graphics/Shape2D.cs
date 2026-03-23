@@ -7,9 +7,9 @@ using Vector2 = OpenTK.Vector2;
 
 namespace Physics_Engine.Graphics;
 
-public abstract class Shape2D : ComponentBase, IRender
+public abstract class Shape2D : Component, IRender
 {
-    private Transform2D Transform => Owner.Transform;
+    private Transform Transform => Entity.Transform;
 
     public bool Filled = false;
     public Color4 Color = Color4.White;

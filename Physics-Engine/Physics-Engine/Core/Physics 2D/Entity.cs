@@ -4,18 +4,18 @@ using Physics_Engine.Core.Transform;
 
 namespace Physics_Engine.Core.Physics_2D;
 
-public class PhysicsObject
+public class Entity
 {
     public string Name { get; }
     public string Tag { get; }
-    private Transform2D _transform;
-    public Transform2D Transform
+    private Transform.Transform _transform;
+    public Transform.Transform Transform
     {
         get
         {
             if (_transform == null)
             {
-                _transform ??= new Transform2D();
+                _transform ??= new Transform.Transform();
                 Components.Add(_transform);
             }
             return _transform;
@@ -23,13 +23,13 @@ public class PhysicsObject
         set { _transform = value; }
     }
     private readonly ComponentContainer _components;
-    public PhysicsObject(string name = "", string tag = "")
+    public Entity(string name = "", string tag = "")
     {
         Name = name;
         Tag = tag;
         _components = new ComponentContainer(this);
-        var physicsSystem = ServiceLocator.Instance.Get<PhysicsObjectContainer>();
-        physicsSystem.RegisterObject(this);
+        var physicsSystem = ServiceLocator.Instance.Get<EntityContainer>();
+        physicsSystem.RegisterEntity(this);
     }
     public ComponentContainer Components => _components;
 }

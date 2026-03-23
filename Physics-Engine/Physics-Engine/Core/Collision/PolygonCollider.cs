@@ -10,7 +10,7 @@ namespace Physics_Engine.Core.Collision
         public override bool Intersects(Collider other, out CollisionInfo collisionInfo)
         {
             collisionInfo = new CollisionInfo();
-            return CollisionDetector.Intersect(Owner.Components.Get<Rigidbody2D>(), other.Owner.Components.Get<Rigidbody2D>(), out collisionInfo);
+            return CollisionDetector.Intersect(Entity.Components.Get<Rigidbody2D>(), other.Entity.Components.Get<Rigidbody2D>(), out collisionInfo);
         }
     }
 }

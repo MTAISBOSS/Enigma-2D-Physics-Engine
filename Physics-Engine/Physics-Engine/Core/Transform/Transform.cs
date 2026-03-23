@@ -1,27 +1,21 @@
-﻿using Physics_Engine.Math;
+﻿using Physics_Engine.Core.Component_System;
+using Physics_Engine.Math;
 
-namespace Physics_Engine.Core.Transform;
-
-public readonly struct Transform
+namespace Physics_Engine.Core.Transform
 {
-    public readonly float PositionX;
-    public readonly float PositionY;
-    public readonly float Sin;
-    public readonly float Cos;
-    public static readonly Transform Zero = new Transform(0f,0f,0f);
-
-    public Transform(Vector2 position, float angle)
+    public class Transform : Component
     {
-        PositionX = position.x;
-        PositionY = position.y;
-        Sin = (float)System.Math.Sin(angle);
-        Cos = (float)System.Math.Cos(angle);
-    }
-    public Transform(float x, float y, float angle)
-    {
-        PositionX = x;
-        PositionY = y;
-        Sin = (float)System.Math.Sin(angle);
-        Cos = (float)System.Math.Cos(angle);
+        public Vector2 Position { get; set; } = new(0, 0);
+        public Vector2 Scale { get; set; } = Vector2.One;
+        public float Rotation { get; set; }
+        public void Translate(Vector2 delta)
+        {
+            Position += delta;
+        }
+        public void Rotate(float deltaAngle)
+        {
+            Rotation += deltaAngle;
+        }
+        public override bool IsAbleToDuplicate() => false;
     }
 }

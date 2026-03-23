@@ -6,11 +6,11 @@ using Physics_Engine.Math;
 
 namespace Physics_Engine.Core.Rigidbody
 {
-    public abstract class Rigidbody2D : ComponentBase, IMovement, IRotation
+    public abstract class Rigidbody2D : Component, IMovement, IRotation
     {
         private Vector2 _force = Vector2.Zero;
-        private Transform2D Transform => Owner.Transform;
-        public PhysicsBody Body { get; } = new();
+        private Transform.Transform Transform => Entity.Transform;
+        public RigidbodyData Body { get; } = new();
 
         public float Rotation
         {
@@ -32,6 +32,7 @@ namespace Physics_Engine.Core.Rigidbody
         }
         public abstract bool TryCreate();
         public abstract AABBCollision GetAABB();
+        public abstract float CalculateRotationalInertia();
         public void MoveByAmount(Vector2 amount)
         {
             Transform.Translate(amount);
@@ -45,30 +46,31 @@ namespace Physics_Engine.Core.Rigidbody
             Body.IsTransformUpdateRequired = true;
             Body.IsAabbCollisionUpdateRequired = true;
         }
-
+        public void RotateToExactAngle(float angle)
+        {
+            Transform.Rotation = angle;
+            Body.IsTransformUpdateRequired = true;
+            Body.IsAabbCollisionUpdateRequired = true;
+        }
         public void RotateByAmount(float amount)
         {
             Transform.Rotate(amount);
             Body.IsTransformUpdateRequired = true;
             Body.IsAabbCollisionUpdateRequired = true;
         }
-
         public void Simulate(float time)
         {
-            if (Body.IsStatic)
-            {
-                return;
-            }
+            if (Body.IsStatic) return;
 
             time /= PhysicsSetting.Iterations;
+    
+            Vector2 acceleration = _force / Body.Mass;
             if (Body.HasGravity)
             {
-                Body.LinearVelocity += PhysicsSetting.GravityDirection * time;
+                acceleration += PhysicsSetting.GravityDirection; 
             }
-            else
-            {
-                Body.LinearVelocity += _force / Body.Mass * time;
-            }
+
+            Body.LinearVelocity += acceleration * time;
 
             Position += Body.LinearVelocity * time;
             Rotation += Body.AngularVelocity * time;
@@ -81,7 +83,6 @@ namespace Physics_Engine.Core.Rigidbody
         {
             _force = force;
         }
-
         public override bool IsAbleToDuplicate()
         {
             return false;

@@ -5,9 +5,9 @@ using Physics_Engine.Math;
 
 namespace Physics_Engine.Core.Collision;
 
-public abstract class Collider : ComponentBase
+public abstract class Collider : Component
 {
-    private Transform2D Transform => Owner.Transform;
+    private Transform.Transform Transform => Entity.Transform;
 
     public Vector2 Position
     {

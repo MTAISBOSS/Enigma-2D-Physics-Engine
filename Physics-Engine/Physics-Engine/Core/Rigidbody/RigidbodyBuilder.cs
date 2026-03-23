@@ -58,25 +58,40 @@ public class RigidbodyBuilder
             return this;
         }
 
+        public Builder<T> WithStaticFriction(float friction)
+        {
+            _instance.Body.StaticFriction = Mathematics.Clamp(friction, 0, 1);
+            return this;
+        }
+
+        public Builder<T> WithDynamicFriction(float friction)
+        {
+            _instance.Body.DynamicFriction = Mathematics.Clamp(friction, 0, 1);
+            return this;
+        }
+
         public Builder<T> WithArea(ShapeArea shapeArea)
         {
             _instance.Body.ShapeArea = shapeArea;
             return this;
         }
-        public Builder<T> WithOwner(PhysicsObject owner)
+
+        public Builder<T> WithOwner(Entity entity)
         {
-            _instance.Owner = owner;
+            _instance.Entity = entity;
             return this;
-        } 
+        }
+
         public Builder<T> WithGravityState(bool hasGravity)
         {
             _instance.Body.HasGravity = hasGravity;
             return this;
         }
+
         public T Build()
         {
             bool isAbleToCreateBody = _instance.TryCreate();
-            ServiceLocator.Instance.Get<PhysicsWorld>().RegisterRigidbody(_instance);
+            ServiceLocator.Instance.Get<PhysicsContext>().RegisterRigidbody(_instance);
             return isAbleToCreateBody ? _instance : null;
         }
     }

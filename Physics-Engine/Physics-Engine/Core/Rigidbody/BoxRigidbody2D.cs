@@ -20,7 +20,7 @@ namespace Physics_Engine.Core.Rigidbody
             Body.Indices = CreateIndices();
             Body.IsTransformUpdateRequired = true;
             Body.TransformedVertices = new Vector2[Body.Vertices.Length];
-
+            Body.Inertia = CalculateRotationalInertia();
             return true;
         }
 
@@ -30,6 +30,7 @@ namespace Physics_Engine.Core.Rigidbody
             {
                 return Body.AABBCollision;
             }
+
             float minX = float.MaxValue;
             float minY = float.MaxValue;
             float maxX = float.MinValue;
@@ -59,11 +60,16 @@ namespace Physics_Engine.Core.Rigidbody
                     maxY = v.y;
                 }
             }
-            
+
             Body.IsAabbCollisionUpdateRequired = false;
 
             Body.AABBCollision = new AABBCollision(minX, minY, maxX, maxY);
             return Body.AABBCollision;
+        }
+
+        public override float CalculateRotationalInertia()
+        {
+            return 0.08f * Body.Mass * (BoxArea.Width * BoxArea.Width + BoxArea.Height * BoxArea.Height) * 0.001f;
         }
 
         public Vector2[] CreateVertices()
@@ -86,11 +92,11 @@ namespace Physics_Engine.Core.Rigidbody
         {
             if (Body.IsTransformUpdateRequired)
             {
-                Transform.Transform transform = new Transform.Transform(Position, Rotation);
+                Transform.Pose2D pose2D = new Transform.Pose2D(Position, Rotation);
                 for (int i = 0; i < Body.Vertices.Length; i++)
                 {
                     Vector2 vertex = Body.Vertices[i];
-                    Body.TransformedVertices[i] = Vector2.Translate(vertex, transform);
+                    Body.TransformedVertices[i] = Vector2.Translate(vertex, pose2D);
                 }
             }
 

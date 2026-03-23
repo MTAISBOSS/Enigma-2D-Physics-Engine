@@ -4,7 +4,7 @@ using Physics_Engine.Core.Rigidbody;
 
 namespace Physics_Engine.Core.Sample_Physic_Objects;
 
-public class Circle : PhysicsObject
+public class Circle : Entity
 {
     public Circle() : base()
     {
@@ -22,7 +22,7 @@ public class Circle : PhysicsObject
             Filled = true,
             Radius = Transform.Scale.x,
             RenderOrder = 1,
-            Owner = this,
+            Entity = this,
         };
         var rigidbody2D = new RigidbodyBuilder.Builder<CircleRigidbody2D>()
             .WithArea(new CircleArea()
@@ -34,7 +34,7 @@ public class Circle : PhysicsObject
         var collider = new CircleCollider()
         {
             Radius = Transform.Scale.x,
-            Owner = this
+            Entity = this
         };
         Components.Add(collider);
         Components.Add(rigidbody2D);

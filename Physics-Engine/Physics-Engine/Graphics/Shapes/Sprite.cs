@@ -9,8 +9,8 @@ namespace Physics_Engine.Graphics.Shapes
     public class Sprite : Shape2D
     {
         public int TextureId { get; private set; }
-        public float Width => Owner.Transform.Scale.x;
-        public float Height => Owner.Transform.Scale.y;
+        public float Width => Entity.Transform.Scale.x;
+        public float Height => Entity.Transform.Scale.y;
 
         public Sprite(string filePath)
         {

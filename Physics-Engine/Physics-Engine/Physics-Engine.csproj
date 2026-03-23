@@ -56,7 +56,7 @@
         <Compile Include="Core\Collision\PolygonCollider.cs" />
         <Compile Include="Core\Component System\ComponentContainer.cs" />
         <Compile Include="Core\Component System\IComponent.cs" />
-        <Compile Include="Core\Component System\ComponentBase.cs" />
+        <Compile Include="Core\Component System\Component.cs" />
         <Compile Include="Core\Input System\InputBinding.cs" />
         <Compile Include="Core\Input System\InputSystem.cs" />
         <Compile Include="Core\Interfaces\IIndices.cs" />
@@ -64,14 +64,14 @@
         <Compile Include="Core\Interfaces\IRotation.cs" />
         <Compile Include="Core\Interfaces\IVertices.cs" />
         <Compile Include="Core\Log System\Logger.cs" />
-        <Compile Include="Core\Physics 2D\PhysicsObjectContainer.cs" />
-        <Compile Include="Core\Physics 2D\PhysicsWorld.cs" />
-        <Compile Include="Core\Physics 2D\PhysicsFactory.cs" />
-        <Compile Include="Core\Physics 2D\PhysicsObject.cs" />
+        <Compile Include="Core\Physics 2D\EntityContainer.cs" />
+        <Compile Include="Core\Physics 2D\PhysicsContext.cs" />
+        <Compile Include="Core\Physics 2D\EntityFactory.cs" />
+        <Compile Include="Core\Physics 2D\Entity.cs" />
         <Compile Include="Core\Physics 2D\PhysicsSetting.cs" />
         <Compile Include="Core\Rigidbody\RigidbodyBuilder.cs" />
         <Compile Include="Core\Rigidbody\ShapeArea.cs" />
-        <Compile Include="Core\Rigidbody\PhysicsBody.cs" />
+        <Compile Include="Core\Rigidbody\RigidbodyData.cs" />
         <Compile Include="Core\Rigidbody\BoxArea.cs" />
         <Compile Include="Core\Rigidbody\BoxRigidbody2D.cs" />
         <Compile Include="Core\Rigidbody\CircleArea.cs" />
@@ -83,8 +83,8 @@
         <Compile Include="Core\Service Locator\IService.cs" />
         <Compile Include="Core\Service Locator\ServiceLocator.cs" />
         <Compile Include="Core\Time\Time.cs" />
+        <Compile Include="Core\Transform\Pose2D.cs" />
         <Compile Include="Core\Transform\Transform.cs" />
-        <Compile Include="Core\Transform\Transform2D.cs" />
         <Compile Include="Engine.cs" />
         <Compile Include="Graphics\Camera2D.cs" />
         <Compile Include="Graphics\DebugRenderer2D.cs" />
@@ -105,6 +105,7 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Utilities\HelperExtensions.cs" />
         <Compile Include="Utilities\RandomHelper.cs" />
+        <Compile Include="Utilities\SpatialHashGrid.cs" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Assets\Audio" />

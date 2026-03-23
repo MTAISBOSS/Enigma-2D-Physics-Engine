@@ -8,12 +8,12 @@ namespace Physics_Engine.Core.Component_System;
 
 public class ComponentContainer
 {
-    private readonly PhysicsObject _owner;
+    private readonly Entity _entity;
     private readonly Dictionary<Type, List<IComponent>> _components = new();
 
-    public ComponentContainer(PhysicsObject owner)
+    public ComponentContainer(Entity entity)
     {
-        _owner = owner;
+        _entity = entity;
     }
 
     public void Add<T>(T component) where T : IComponent
@@ -25,8 +25,11 @@ public class ComponentContainer
         if (!component.IsAbleToDuplicate() && _components[type].Any(c => c.GetType() == type))
             throw new InvalidOperationException($"Component {type.Name} cannot be duplicated.");
 
-        if (component is ComponentBase baseComp)
-            baseComp.Owner = _owner;
+        if (component is Component baseComp)
+        {
+            baseComp.Entity = _entity;
+            baseComp.Start();
+        }
 
         _components[type].Add(component);
     }
@@ -55,6 +58,7 @@ public class ComponentContainer
                 }
             }
         }
+
         return null;
     }
 

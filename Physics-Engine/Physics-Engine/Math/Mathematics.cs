@@ -54,5 +54,14 @@
         {
             return (float)System.Math.Sqrt(scalar);
         }
+
+        public static bool IsNearlyEqual(float a, float b)
+        {
+            return System.Math.Abs(a - b) < 0.0005f;
+        }
+        public static bool IsNearlyEqual(Vector2 a, Vector2 b)
+        {
+            return System.Math.Abs(a.x - b.x) < 0.0005f && System.Math.Abs(a.y- b.y) < 0.0005f;
+        }
     }
 }

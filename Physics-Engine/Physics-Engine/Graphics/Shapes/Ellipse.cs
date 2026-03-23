@@ -4,8 +4,8 @@ namespace Physics_Engine.Graphics.Shapes
 {
     public class Ellipse : Shape2D
     {
-        public float Radius1 => Owner.Transform.Scale.x;
-        public float Radius2 => Owner.Transform.Scale.y;
+        public float Radius1 => Entity.Transform.Scale.x;
+        public float Radius2 => Entity.Transform.Scale.y;
         public int Segments = 24;
 
         public Ellipse()

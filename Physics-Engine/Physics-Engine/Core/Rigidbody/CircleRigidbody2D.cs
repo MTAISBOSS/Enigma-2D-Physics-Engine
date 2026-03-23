@@ -13,6 +13,8 @@ namespace Physics_Engine.Core.Rigidbody
             this.ValidateMaxSize();
             this.ValidateMinDensity();
             this.ValidateMaxDensity();
+            
+            Body.Inertia = CalculateRotationalInertia();
             return true;
         }
 
@@ -31,6 +33,11 @@ namespace Physics_Engine.Core.Rigidbody
             
             Body.AABBCollision = new AABBCollision(minX, minY, maxX, maxY);
             return Body.AABBCollision;
+        }
+
+        public override float CalculateRotationalInertia()
+        {
+            return 0.5f * Body.Mass * CircleArea.Radius * CircleArea.Radius;
         }
     }
 }

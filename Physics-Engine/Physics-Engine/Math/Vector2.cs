@@ -38,13 +38,15 @@ namespace Physics_Engine.Math
             return new Vector2(a.x / scalar, a.y / scalar);
         }
         public static Vector2 operator -(Vector2 a) => new Vector2(-1 * a.x, -1 * a.y);
+        public static bool operator ==(Vector2 a,Vector2 b) => Equals(a,b);
+        public static bool operator !=(Vector2 a, Vector2 b) => !Equals(a,b);
 
-        public static Vector2 Translate(Vector2 vector2, Transform transform)
+        public static Vector2 Translate(Vector2 vector2, Pose2D pose2D)
         {
             //Rotation matrix
             return new Vector2(
-                transform.Cos * vector2.x - transform.Sin * vector2.y + transform.PositionX,
-                transform.Sin * vector2.x + transform.Cos * vector2.y + transform.PositionY
+                pose2D.Cos * vector2.x - pose2D.Sin * vector2.y + pose2D.PositionX,
+                pose2D.Sin * vector2.x + pose2D.Cos * vector2.y + pose2D.PositionY
             );
         }
 
