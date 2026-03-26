@@ -7,6 +7,10 @@ namespace Physics_Engine.Core.Log_System
     public static class Logger
     {
         private static readonly int MainThreadId;
+        public static bool isActive = true;
+        public static bool showLog = true;
+        public static bool showWarning = true;
+        public static bool showError = true;
 
         static Logger()
         {
@@ -15,7 +19,8 @@ namespace Physics_Engine.Core.Log_System
             System.Threading.Tasks.TaskScheduler.UnobservedTaskException += HandleUnobservedTaskException;
         }
 
-        private static void HandleUnobservedTaskException(object sender, System.Threading.Tasks.UnobservedTaskExceptionEventArgs e)
+        private static void HandleUnobservedTaskException(object sender,
+            System.Threading.Tasks.UnobservedTaskExceptionEventArgs e)
         {
             LogError($"UnobservedTaskException: {e.Exception}");
         }
@@ -48,21 +53,41 @@ namespace Physics_Engine.Core.Log_System
 
         public static void Log(string info)
         {
+            if (!showLog)
+            {
+                return;
+            }
+
             LogInternal("INFO", info);
         }
 
         public static void LogWarning(string info)
         {
+            if (!showWarning)
+            {
+                return;
+            }
+
             LogInternal("WARNING", info, ConsoleColor.Yellow);
         }
 
         public static void LogError(string info)
         {
+            if (!showError)
+            {
+                return;
+            }
+
             LogInternal("ERROR", info, ConsoleColor.Red);
         }
 
         public static void LogError(Exception ex)
         {
+            if (!showError)
+            {
+                return;
+            }
+
             LogInternal("EXCEPTION", ex.ToString(), ConsoleColor.Red);
         }
 

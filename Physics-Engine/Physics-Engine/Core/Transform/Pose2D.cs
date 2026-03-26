@@ -14,14 +14,14 @@ public readonly struct Pose2D
     {
         PositionX = position.x;
         PositionY = position.y;
-        Sin = (float)System.Math.Sin(angle);
-        Cos = (float)System.Math.Cos(angle);
+        Sin = (float)System.Math.Sin(angle * System.Math.PI / 180);
+        Cos = (float)System.Math.Cos(angle * System.Math.PI / 180);
     }
     public Pose2D(float x, float y, float angle)
     {
         PositionX = x;
         PositionY = y;
-        Sin = (float)System.Math.Sin(angle);
-        Cos = (float)System.Math.Cos(angle);
+        Sin = (float)System.Math.Sin(angle * System.Math.PI / 180);
+        Cos = (float)System.Math.Cos(angle * System.Math.PI / 180);
     }
 }

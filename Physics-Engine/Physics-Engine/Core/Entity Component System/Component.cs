@@ -1,6 +1,6 @@
 ﻿namespace Physics_Engine.Core.Entity_Component_System;
 
-public abstract class Component : IComponent
+public abstract class Component
 {
     public Entity Entity { get; internal set; }
     public virtual void Start(){}

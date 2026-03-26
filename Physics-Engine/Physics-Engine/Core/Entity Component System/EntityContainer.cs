@@ -5,7 +5,7 @@ namespace Physics_Engine.Core.Entity_Component_System;
 
 public class EntityContainer : IService
 {
-    private readonly List<Entity> _entities = new List<Entity>();
+    private readonly List<Entity> entities = new List<Entity>();
 
     public EntityContainer()
     {
@@ -19,17 +19,25 @@ public class EntityContainer : IService
 
     public void RegisterEntity(Entity entity)
     {
-        if (!_entities.Contains(entity))
+        if (!entities.Contains(entity))
         {
-            _entities.Add(entity);
+            entities.Add(entity);
         }
     }
 
     public void UnregisterEntity(Entity entity)
     {
-        if (_entities.Contains(entity))
+        if (entities.Contains(entity))
         {
-            _entities.Remove(entity);
+            entities.Remove(entity);
+        }
+    }
+
+    public void Update()
+    {
+        foreach (var entity in entities)
+        {
+            entity.Components.Update();
         }
     }
 }

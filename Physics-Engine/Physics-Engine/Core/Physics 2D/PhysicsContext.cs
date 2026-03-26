@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Physics_Engine.Core.Collision;
 using Physics_Engine.Core.Rigidbody;
 using Physics_Engine.Core.Service_Locator;
@@ -23,16 +24,16 @@ namespace Physics_Engine.Core.Physics_2D
 
     public class PhysicsContext : IService
     {
-        private readonly List<Rigidbody2D> _rigidbody2Ds = new(1000);
-        private readonly List<ContactPair> _contactPairs = new(1000);
-        private AABBCollision[] _cachedAabBs = new AABBCollision[1000];
+        private readonly List<Rigidbody2D> rigidbody2Ds = new(100);
+        private readonly List<ContactPair> contactPairs = new(100);
+        private AABBCollision[] cachedAabBs = new AABBCollision[100];
 
-        private readonly SpatialHashGrid _grid = new SpatialHashGrid(200);
+        private readonly SpatialHashGrid grid = new SpatialHashGrid(40);
 
-        private readonly HashSet<long> _pairTracker = new HashSet<long>();
-        private int _currentIteration;
+        private readonly HashSet<long> pairTracker = new HashSet<long>();
+        private int currentIteration;
 
-        public int BodyCount => _rigidbody2Ds.Count;
+        public int BodyCount => rigidbody2Ds.Count;
 
         public PhysicsContext()
         {
@@ -46,22 +47,22 @@ namespace Physics_Engine.Core.Physics_2D
 
         public void RegisterRigidbody(Rigidbody2D rigidbody2D)
         {
-            if (!_rigidbody2Ds.Contains(rigidbody2D))
+            if (!rigidbody2Ds.Contains(rigidbody2D))
             {
-                _rigidbody2Ds.Add(rigidbody2D);
+                rigidbody2Ds.Add(rigidbody2D);
             }
         }
 
         public void UnregisterRigidbody(Rigidbody2D rigidbody2D)
         {
-            _rigidbody2Ds.Remove(rigidbody2D);
+            rigidbody2Ds.Remove(rigidbody2D);
         }
 
         public void Simulate(float time)
         {
-            for (int currentIteration = 0; currentIteration < PhysicsSetting.Iterations; currentIteration++)
+            for (int iteration = 0; iteration < PhysicsSetting.Iterations; iteration++)
             {
-                _currentIteration = currentIteration;
+                currentIteration = iteration;
                 SimulateMovement(time);
                 SimulateCollision();
             }
@@ -71,17 +72,17 @@ namespace Physics_Engine.Core.Physics_2D
 
         private void SimulateMovement(float time)
         {
-            for (int i = 0; i < _rigidbody2Ds.Count; i++)
+            foreach (var rigidbody2D in rigidbody2Ds)
             {
-                _rigidbody2Ds[i].Simulate(time);
+                rigidbody2D.Simulate(time);
             }
         }
 
         private void SimulateCollision()
         {
-            _contactPairs.Clear();
-            _pairTracker.Clear();
-            _grid.Clear();
+            contactPairs.Clear();
+            pairTracker.Clear();
+            grid.Clear();
 
             BroadPhase();
             NarrowPhase();
@@ -90,24 +91,25 @@ namespace Physics_Engine.Core.Physics_2D
 
         private void BroadPhase()
         {
-            int count = _rigidbody2Ds.Count;
+            int count = rigidbody2Ds.Count;
 
-            if (_cachedAabBs.Length < count)
-                Array.Resize(ref _cachedAabBs, count * 2);
+            if (cachedAabBs.Length < count)
+                Array.Resize(ref cachedAabBs, count * 2);
 
             for (int i = 0; i < count; i++)
             {
-                _cachedAabBs[i] = _rigidbody2Ds[i].GetAABB();
-                _grid.Insert(i, _cachedAabBs[i]);
+                cachedAabBs[i] = rigidbody2Ds[i].GetAABB();
+               // Console.WriteLine($"Body {i} ({rigidbody2Ds[i].Entity.Name}): AABB Min({cachedAabBs[i].Min.x}, {cachedAabBs[i].Min.y}) Max({cachedAabBs[i].Max.x}, {cachedAabBs[i].Max.y})");
+                grid.Insert(i, cachedAabBs[i]);
             }
 
-            foreach (List<int> cell in _grid.GetActiveCells())
+            foreach (List<int> cell in grid.GetActiveCells())
             {
                 for (int i = 0; i < cell.Count - 1; i++)
                 {
                     int indexA = cell[i];
-                    Rigidbody2D bodyA = _rigidbody2Ds[indexA];
-                    AABBCollision aabbA = _cachedAabBs[indexA];
+                    Rigidbody2D bodyA = rigidbody2Ds[indexA];
+                    AABBCollision aabbA = cachedAabBs[indexA];
 
                     for (int j = i + 1; j < cell.Count; j++)
                     {
@@ -117,18 +119,24 @@ namespace Physics_Engine.Core.Physics_2D
                         int max = System.Math.Max(indexA, indexB);
                         long pairId = ((long)min << 32) | (uint)max;
 
-                        if (!_pairTracker.Add(pairId))
+                        if (!pairTracker.Add(pairId))
                             continue;
 
-                        Rigidbody2D bodyB = _rigidbody2Ds[indexB];
+                        Rigidbody2D bodyB = rigidbody2Ds[indexB];
 
                         if (bodyA.Body.IsStatic && bodyB.Body.IsStatic)
                             continue;
 
-                        if (!CollisionDetector.IntersectAABBs(aabbA, _cachedAabBs[indexB]))
+                        if (!CollisionDetector.IntersectAABBs(aabbA, cachedAabBs[indexB]))
+                        {
+                            // Add this debug line
+                           // Console.WriteLine($"AABB A: Min({aabbA.Min.x}, {aabbA.Min.y}) Max({aabbA.Max.x}, {aabbA.Max.y})");
+                            //Console.WriteLine($"AABB B: Min({cachedAabBs[indexB].Min.x}, {cachedAabBs[indexB].Min.y}) Max({cachedAabBs[indexB].Max.x}, {cachedAabBs[indexB].Max.y})");
                             continue;
+                        }
 
-                        _contactPairs.Add(new ContactPair(min, max));
+
+                        contactPairs.Add(new ContactPair(min, max));
                     }
                 }
             }
@@ -136,25 +144,39 @@ namespace Physics_Engine.Core.Physics_2D
 
         private void NarrowPhase()
         {
-            for (int i = 0; i < _contactPairs.Count; i++)
+            foreach (var pair in contactPairs)
             {
-                var pair = _contactPairs[i];
-                var bodyA = _rigidbody2Ds[pair.Item1];
-                var bodyB = _rigidbody2Ds[pair.Item2];
+                var bodyA = rigidbody2Ds[pair.Item1];
+                var bodyB = rigidbody2Ds[pair.Item2];
 
-                if (CollisionDetector.Intersect(bodyA, bodyB, out CollisionInfo info))
+                var colA = bodyA.Entity.Components.Get<Collider>();
+                var colB = bodyB.Entity.Components.Get<Collider>();
+
+
+                if (!CollisionDetector.Intersect(colA, colB, out CollisionInfo info)) continue;
+
+                if (!colA.IsTrigger && !colB.IsTrigger)
                 {
                     SeparateBodies(bodyA, bodyB, in info);
-
-                    ContactDetector.FindContactPoints(bodyA, bodyB, out Vector2 contact1, out Vector2 contact2,
+                    ContactDetector.FindContactPoints(colA, colB, out Vector2 contact1, out Vector2 contact2,
                         out int contactCount);
-
                     CollisionManifold contact =
-                        new CollisionManifold(bodyA, bodyB, info, contact1, contact2, contactCount);
+                        new CollisionManifold(colA, colB, info, contact1, contact2, contactCount);
                     CollisionResolver.ResolveWithRotationWithFriction(in contact);
+                }
+
+                if (colA.IsTrigger && !colB.IsTrigger)
+                {
+                    colA.OnTriggerEnter(colB);
+                }
+
+                if (!colA.IsTrigger && colB.IsTrigger)
+                {
+                    colB.OnTriggerEnter(colA);
                 }
             }
         }
+
 
         private void SeparateBodies(Rigidbody2D bodyA, Rigidbody2D bodyB, in CollisionInfo info)
         {
@@ -172,15 +194,14 @@ namespace Physics_Engine.Core.Physics_2D
                 bodyB.MoveByAmount(info.Normal * info.Depth / 2f);
             }
         }
+
         private void RemoveOutOfSightBodies()
         {
-            for (int i = _rigidbody2Ds.Count - 1; i >= 0; i--)
+            for (int i = rigidbody2Ds.Count - 1; i >= 0; i--)
             {
-                if (_rigidbody2Ds[i].GetAABB().Max.y < ShapeRenderer.Instance.MainCamera.Bottom)
-                {
-                    _rigidbody2Ds[i] = _rigidbody2Ds[_rigidbody2Ds.Count - 1];
-                    _rigidbody2Ds.RemoveAt(_rigidbody2Ds.Count - 1);
-                }
+                if (!(rigidbody2Ds[i].GetAABB().Max.y < ShapeRenderer.Instance.MainCamera.Bottom)) continue;
+                rigidbody2Ds[i] = rigidbody2Ds[rigidbody2Ds.Count - 1];
+                rigidbody2Ds.RemoveAt(rigidbody2Ds.Count - 1);
             }
         }
     }

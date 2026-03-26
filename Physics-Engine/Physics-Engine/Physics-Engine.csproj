@@ -9,7 +9,7 @@
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>Physics_Engine</RootNamespace>
         <AssemblyName>Physics_Engine</AssemblyName>
-        <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <FileAlignment>512</FileAlignment>
         <LangVersion>default</LangVersion>
@@ -58,7 +58,6 @@
         <Compile Include="Core\Entity Component System\Entity.cs" />
         <Compile Include="Core\Entity Component System\EntityContainer.cs" />
         <Compile Include="Core\Entity Component System\EntityFactory.cs" />
-        <Compile Include="Core\Entity Component System\IComponent.cs" />
         <Compile Include="Core\Entity Component System\Component.cs" />
         <Compile Include="Core\Input System\InputBinding.cs" />
         <Compile Include="Core\Input System\InputSystem.cs" />
@@ -67,15 +66,14 @@
         <Compile Include="Core\Interfaces\IRotation.cs" />
         <Compile Include="Core\Interfaces\IVertices.cs" />
         <Compile Include="Core\Log System\Logger.cs" />
+        <Compile Include="Core\Physics 2D\PhysicMaterial.cs" />
         <Compile Include="Core\Physics 2D\PhysicsContext.cs" />
         <Compile Include="Core\Physics 2D\PhysicsSetting.cs" />
         <Compile Include="Core\Rigidbody\RigidbodyBuilder.cs" />
         <Compile Include="Core\Rigidbody\ShapeArea.cs" />
         <Compile Include="Core\Rigidbody\RigidbodyData.cs" />
         <Compile Include="Core\Rigidbody\BoxArea.cs" />
-        <Compile Include="Core\Rigidbody\BoxRigidbody2D.cs" />
         <Compile Include="Core\Rigidbody\CircleArea.cs" />
-        <Compile Include="Core\Rigidbody\CircleRigidbody2D.cs" />
         <Compile Include="Core\Rigidbody\Rigidbody2D.cs" />
         <Compile Include="Core\Rigidbody\Rigidbody2DExtensions.cs" />
         <Compile Include="Core\Sample Physic Objects\Box.cs" />

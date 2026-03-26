@@ -19,31 +19,31 @@ namespace Physics_Engine.Core.Collision
             }
             return true;
         }
-        public static bool Intersect(Rigidbody2D bodyA, Rigidbody2D bodyB, out CollisionInfo collisionInfo)
+        public static bool Intersect(Collider colA, Collider colB, out CollisionInfo collisionInfo)
         {
             collisionInfo = new CollisionInfo();
-            if ((bodyA.Position - bodyB.Position).Equals(Vector2.Zero))
+            if ((colA.Position - colB.Position).Equals(Vector2.Zero))
             {
                 collisionInfo.Depth =
-                    System.Math.Min(bodyA.Body.ShapeArea.Calculate(),
-                        bodyB.Body.ShapeArea.Calculate());
+                    System.Math.Min(colA.ShapeArea.Calculate(),
+                        colB.ShapeArea.Calculate());
                 collisionInfo.Normal =
                     new Vector2(RandomHelper.GetRandomFloat(0, 1), RandomHelper.GetRandomFloat(0, 1));
                 return true;
             }
 
-            if (bodyA is CircleRigidbody2D circleA && bodyB is CircleRigidbody2D circleB)
+            if (colA is CircleCollider circleA && colB is CircleCollider circleB)
             {
                 return IntersectCircles(circleA, circleB, out collisionInfo);
             }
 
-            if (bodyA is CircleRigidbody2D circleA1 && bodyB is BoxRigidbody2D boxB)
+            if (colA is CircleCollider circleA1 && colB is PolygonCollider boxB)
             {
                 return IntersectCircleWithPolygon(circleA1, boxB,
                     out collisionInfo);
             }
 
-            if (bodyA is BoxRigidbody2D boxA && bodyB is CircleRigidbody2D circleB1)
+            if (colA is PolygonCollider boxA && colB is CircleCollider circleB1)
             {
                 bool result = IntersectCircleWithPolygon(circleB1, boxA,
                     out collisionInfo);
@@ -51,7 +51,7 @@ namespace Physics_Engine.Core.Collision
                 return result;
             }
 
-            if (bodyA is BoxRigidbody2D boxA1 && bodyB is BoxRigidbody2D boxB1)
+            if (colA is PolygonCollider boxA1 && colB is PolygonCollider boxB1)
             {
                 return IntersectPolygons(boxA1, boxB1, out collisionInfo);
             }
@@ -62,15 +62,15 @@ namespace Physics_Engine.Core.Collision
 
         #region Intersection Algorithms
 
-        private static bool IntersectCircles(CircleRigidbody2D circleA, CircleRigidbody2D circleB,
+        private static bool IntersectCircles(CircleCollider circleA, CircleCollider circleB,
             out CollisionInfo collisionInfo)
         {
             collisionInfo.Depth = 0;
             collisionInfo.Normal = Vector2.Zero;
 
             float distance = Mathematics.Distance(circleA.Position, circleB.Position);
-            float totalRadius = ((CircleArea)circleA.Body.ShapeArea).Radius +
-                                ((CircleArea)circleB.Body.ShapeArea).Radius;
+            float totalRadius = (circleA.CircleArea).Radius +
+                                (circleB.CircleArea).Radius;
             if (distance >= totalRadius)
             {
                 return false;
@@ -81,7 +81,7 @@ namespace Physics_Engine.Core.Collision
             return true;
         }
 
-        private static bool IntersectCircleWithPolygon(CircleRigidbody2D circle, BoxRigidbody2D polygon,
+        private static bool IntersectCircleWithPolygon(CircleCollider circle, PolygonCollider polygon,
             out CollisionInfo collisionInfo)
         {
             collisionInfo.Normal = Vector2.Zero;
@@ -100,7 +100,7 @@ namespace Physics_Engine.Core.Collision
                 axis = Mathematics.Normalize(axis);
 
                 ProjectVertices(vertices, axis, out minA, out maxA);
-                ProjectCircle(circle.Position, ((CircleArea)circle.Body.ShapeArea).Radius, axis, out minB,
+                ProjectCircle(circle.Position, circle.CircleArea.Radius, axis, out minB,
                     out maxB);
                 isThereGap = minA >= maxB || minB >= maxA;
 
@@ -122,7 +122,7 @@ namespace Physics_Engine.Core.Collision
             axis = closestPoint - circle.Position;
             axis = Mathematics.Normalize(axis);
             ProjectVertices(vertices, axis, out minA, out maxA);
-            ProjectCircle(circle.Position, ((CircleArea)circle.Body.ShapeArea).Radius, axis, out minB,
+            ProjectCircle(circle.Position, circle.CircleArea.Radius, axis, out minB,
                 out maxB);
             isThereGap = minA >= maxB || minB >= maxA;
 
@@ -150,7 +150,7 @@ namespace Physics_Engine.Core.Collision
         }
 
 
-        private static bool IntersectPolygons(BoxRigidbody2D polygonA, BoxRigidbody2D polygonB,
+        private static bool IntersectPolygons(PolygonCollider polygonA, PolygonCollider polygonB,
             out CollisionInfo collisionInfo)
         {
             collisionInfo.Normal = Vector2.Zero;
@@ -256,10 +256,7 @@ namespace Physics_Engine.Core.Collision
 
             if (max < min)
             {
-                //swap
-                float t = min;
-                min = max;
-                max = t;
+                (min, max) = (max, min);
             }
         }
 

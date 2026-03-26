@@ -7,6 +7,7 @@ namespace Physics_Engine.Graphics
     public class ShapeRenderer
     {
         private static ShapeRenderer _instance;
+
         public static ShapeRenderer Instance
         {
             get
@@ -19,14 +20,22 @@ namespace Physics_Engine.Graphics
         public readonly List<IRender> Renderables = new List<IRender>();
         public Camera2D MainCamera { get; set; }
 
-        private ShapeRenderer() { }
+        private ShapeRenderer()
+        {
+        }
 
         public void Render()
         {
             DebugRenderer2D.Begin();
-            
-            foreach (var r in Renderables.OrderBy(r => r.GetSortingOrder()))
+
+            var uiElements = Renderables.Where(o => o.GetLayerMask() == LayerMask.UI).ToArray();
+            var worldElements = Renderables.Where(o => o.GetLayerMask() == LayerMask.World).ToArray();
+            foreach (var r in worldElements)
                 r.Draw();
+            foreach (var r in uiElements)
+                r.Draw();           
+            
+           
 
             DebugRenderer2D.End();
         }
@@ -35,6 +44,5 @@ namespace Physics_Engine.Graphics
         {
             MainCamera = camera;
         }
-
     }
 }

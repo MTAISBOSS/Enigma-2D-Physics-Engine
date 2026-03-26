@@ -69,8 +69,7 @@ namespace Physics_Engine
             //  AudioManager.Play("Music Source","0100_00061");
 
             SampleTimer.Start();
-            CreateBackground();
-            //CreatePlayer();
+            CreatePlayer();
             CreateGround();
             CreateSlope();
             CreateText();
@@ -90,20 +89,17 @@ namespace Physics_Engine
                 Entity = _slope,
                 RenderOrder = 3
             };
-            BoxRigidbody2D slopeRigidbody = new RigidbodyBuilder.Builder<BoxRigidbody2D>()
+            Rigidbody2D slopeRigidbody = new RigidbodyBuilder.Builder<Rigidbody2D>()
                 .WithOwner(_slope)
-                .WithArea(new BoxArea(_slope.Transform.Scale.x, _slope.Transform.Scale.y))
                 .WithState(true)
-                .WithDensity(0.5f)
                 .WithRotation(_slope.Transform.Rotation)
                 .Build();
             PolygonCollider slopeCollider = new PolygonCollider()
             {
                 Entity = _slope,
-                Vertices = slopeRigidbody.GetTransformedVertices()
             };
-            _slope.Components.Add(slopeRigidbody);
             _slope.Components.Add(slopeCollider);
+            _slope.Components.Add(slopeRigidbody);
             _slope.Components.Add(slopeRenderer);
         }
 
@@ -121,18 +117,19 @@ namespace Physics_Engine
                     RenderOrder = 5
                 };
             _player.Components.Add(sprite);
+            
+            Rigidbody2D playerRigidbody2D = new RigidbodyBuilder.Builder<Rigidbody2D>()
+                .WithOwner(_player)
+                .WithGravityState(true)
+                .WithState(false)
+                .WithMass(1)
+                .Build();
+            
             PolygonCollider playerCollider = new PolygonCollider()
             {
                 Entity = _player
             };
             _player.Components.Add(playerCollider);
-
-            BoxRigidbody2D playerRigidbody2D = new RigidbodyBuilder.Builder<BoxRigidbody2D>()
-                .WithArea(new BoxArea(_player.Transform.Scale.x, _player.Transform.Scale.y))
-                .WithRestitution(0.5f)
-                .WithOwner(_player)
-                .WithGravityState(true)
-                .Build();
             _player.Components.Add(playerRigidbody2D);
             _playerInitialScale = _player.Transform.Scale;
         }
@@ -149,7 +146,8 @@ namespace Physics_Engine
                 FontSize = 6,
                 TextContent = "Hello World",
                 RenderOrder = 100,
-                Entity = text
+                Entity = text,
+                Layer = LayerMask.UI
             };
             text.Components.Add(textRenderer);
         }
@@ -161,11 +159,9 @@ namespace Physics_Engine
             ground.Transform.Scale = new Vector2(200, 10);
 
             var groundRb =
-                new RigidbodyBuilder.Builder<BoxRigidbody2D>()
-                    .WithArea(new BoxArea(ground.Transform.Scale.x, ground.Transform.Scale.y))
+                new RigidbodyBuilder.Builder<Rigidbody2D>()
                     .WithState(true)
                     .WithOwner(ground)
-                    .WithDensity(0.5f)
                     .Build();
             var groundCollider = new PolygonCollider()
             {
@@ -178,31 +174,10 @@ namespace Physics_Engine
                 RenderOrder = 0,
                 Entity = ground
             };
-            ground.Components.Add(groundRb);
             ground.Components.Add(groundCollider);
+            ground.Components.Add(groundRb);
             ground.Components.Add(groundRenderer);
         }
-
-        private static void CreateBackground()
-        {
-            Entity background = new Entity("Background")
-            {
-                Transform =
-                {
-                    Scale = new Vector2(ShapeRenderer.Instance.MainCamera.Width,
-                        ShapeRenderer.Instance.MainCamera.Height)
-                }
-            };
-            var backgroundRenderer = new Rectangle()
-            {
-                Color = Color4.DimGray,
-                Filled = true,
-                RenderOrder = -1,
-                Entity = background
-            };
-            background.Components.Add(backgroundRenderer);
-        }
-
         private static void CreateRandomBodiesAndPlayer()
         {
             _player = new Core.Sample_Physic_Objects.Circle("Player");
@@ -253,10 +228,11 @@ namespace Physics_Engine
         {
             //ControlPlayer();
             //Logger.Log($"[Cursor State] x :{InputSystem.GetMousePositionCursorState().x} y :{InputSystem.GetMousePositionCursorState().y}");
-
+            _slope.Components.Get<Rigidbody2D>().RotateByAmount(Time.DeltaTimeFloat * 10);
+            //TODO: Loop through all components in scene graph and call update method on all of them
             if (InputSystem.IsMouseButtonDown(2))
             {
-                if (false)
+                if (RandomHelper.GetRandomBoolean())
                 {
                     Physics_Engine.Core.Sample_Physic_Objects.Circle circle =
                         new Physics_Engine.Core.Sample_Physic_Objects.Circle("Circle");
@@ -286,13 +262,15 @@ namespace Physics_Engine
                 Logger.LogWarning($"Body Count : {_bodyCountString}");
                 Logger.LogWarning($"Sample Time Count : {_totalSampleCount}");
                 Logger.LogWarning($"Step Time: {_totalStepTime}");
+                
                 _totalSBodyCount = 0;
                 _totalStepTime = 0;
                 _totalSampleCount = 0;
                 SampleTimer.Restart();
             }
-
+//Logger.Log($"X: {_player.Transform.Position.x} Y: {_player.Transform.Position.y}");
             Watch.Restart();
+            _entityContainer.Update();
             _physicsContext.Simulate(Time.DeltaTimeFloat);
             Watch.Stop();
 

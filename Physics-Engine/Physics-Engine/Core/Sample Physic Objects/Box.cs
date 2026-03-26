@@ -27,16 +27,14 @@ public class Box : Entity
             RenderOrder = 1,
             Entity = this,
         };
-        var rigidbody2D = new RigidbodyBuilder.Builder<BoxRigidbody2D>()
-            .WithArea(new BoxArea(Transform.Scale.x,Transform.Scale.y))
+        var rigidbody2D = new RigidbodyBuilder.Builder<Rigidbody2D>()
             .WithOwner(this)
-            .WithDensity(0.5f)
-            .WithRestitution(0)
+            .WithMass(0.01f)
             .Build();
         var collider = new PolygonCollider
         {
-            Vertices = rigidbody2D.GetTransformedVertices(),
-            Entity = this
+            Entity = this,
+            Material = new PhysicMaterial(0,1,1,1)
         };
         Components.Add(collider);
         Components.Add(rigidbody2D);

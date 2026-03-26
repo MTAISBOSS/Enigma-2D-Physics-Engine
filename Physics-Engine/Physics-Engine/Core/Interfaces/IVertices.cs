@@ -1,7 +1,6 @@
-﻿using Physics_Engine.Core.Rigidbody;
-using Physics_Engine.Math;
+﻿using Physics_Engine.Math;
 
-namespace Physics_Engine.Core;
+namespace Physics_Engine.Core.Interfaces;
 
 public interface IVertices
 {

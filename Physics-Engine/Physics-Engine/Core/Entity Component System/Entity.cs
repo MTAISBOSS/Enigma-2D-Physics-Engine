@@ -29,5 +29,11 @@ public class Entity
         var physicsSystem = ServiceLocator.Instance.Get<EntityContainer>();
         physicsSystem.RegisterEntity(this);
     }
+
+    ~Entity()
+    {
+        var physicsSystem = ServiceLocator.Instance.Get<EntityContainer>();
+        physicsSystem.UnregisterEntity(this);
+    }
     public ComponentContainer Components => _components;
 }

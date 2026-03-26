@@ -1,4 +1,4 @@
-﻿namespace Physics_Engine.Core;
+﻿namespace Physics_Engine.Core.Interfaces;
 
 public interface IRotation
 {

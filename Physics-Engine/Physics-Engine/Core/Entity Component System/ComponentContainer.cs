@@ -7,18 +7,18 @@ namespace Physics_Engine.Core.Entity_Component_System;
 public class ComponentContainer
 {
     private readonly Entity _entity;
-    private readonly Dictionary<Type, List<IComponent>> _components = new();
+    private readonly Dictionary<Type, List<Component>> _components = new();
 
     public ComponentContainer(Entity entity)
     {
         _entity = entity;
     }
 
-    public void Add<T>(T component) where T : IComponent
+    public void Add<T>(T component) where T : Component
     {
         var type = typeof(T);
         if (!_components.ContainsKey(type))
-            _components[type] = new List<IComponent>();
+            _components[type] = new List<Component>();
 
         if (!component.IsAbleToDuplicate() && _components[type].Any(c => c.GetType() == type))
             throw new InvalidOperationException($"Component {type.Name} cannot be duplicated.");
@@ -32,7 +32,7 @@ public class ComponentContainer
         _components[type].Add(component);
     }
 
-    public bool TryGet<T>(out T component) where T : IComponent
+    public bool TryGet<T>(out T component) where T : Component
     {
         if (_components.TryGetValue(typeof(T), out var list) && list.FirstOrDefault() is T match)
         {
@@ -44,7 +44,7 @@ public class ComponentContainer
         return false;
     }
 
-    public T Get<T>() where T : class, IComponent
+    public T Get<T>() where T : Component
     {
         foreach (var componentList in _components.Values)
         {
@@ -60,13 +60,24 @@ public class ComponentContainer
         return null;
     }
 
-    public IEnumerable<T> GetAll<T>() where T : IComponent =>
+    public IEnumerable<T> GetAll<T>() where T : Component =>
         _components.TryGetValue(typeof(T), out var list)
             ? list.OfType<T>()
             : Enumerable.Empty<T>();
 
-    public void Remove<T>() where T : IComponent
+    public void Remove<T>() where T : Component
     {
         _components.Remove(typeof(T));
+    }
+
+    public void Update()
+    {
+        foreach (var component in _components)
+        {
+            foreach (var component1 in component.Value)
+            {
+                component1.Update();
+            }
+        }
     }
 }

@@ -2,8 +2,8 @@
 {
     public class BoxArea : ShapeArea
     {
-        public float Width { get; set; }
-        public float Height { get; set; }
+        public float Width { get; }
+        public float Height { get; }
 
         public BoxArea(float width,float height)
         {

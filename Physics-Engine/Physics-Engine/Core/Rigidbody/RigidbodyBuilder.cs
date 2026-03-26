@@ -35,45 +35,16 @@ public class RigidbodyBuilder
             return this;
         }
 
-        public Builder<T> WithDensity(float density)
+        public Builder<T> WithMass(float mass)
         {
-            _instance.Body.Density = density;
+            _instance.Body.Mass = mass;
             return this;
         }
 
-        public Builder<T> WithBounciness(float bounciness)
-        {
-            _instance.Body.Bounciness = bounciness;
-            return this;
-        }
 
         public Builder<T> WithState(bool isStatic)
         {
             _instance.Body.IsStatic = isStatic;
-            return this;
-        }
-
-        public Builder<T> WithRestitution(float restitution)
-        {
-            _instance.Body.Restitution = Mathematics.Clamp(restitution, 0, 1);
-            return this;
-        }
-
-        public Builder<T> WithStaticFriction(float friction)
-        {
-            _instance.Body.StaticFriction = Mathematics.Clamp(friction, 0, 1);
-            return this;
-        }
-
-        public Builder<T> WithDynamicFriction(float friction)
-        {
-            _instance.Body.DynamicFriction = Mathematics.Clamp(friction, 0, 1);
-            return this;
-        }
-
-        public Builder<T> WithArea(ShapeArea shapeArea)
-        {
-            _instance.Body.ShapeArea = shapeArea;
             return this;
         }
 

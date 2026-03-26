@@ -1,14 +1,17 @@
-﻿using Physics_Engine.Core.Collision;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Physics_Engine.Core.Collision;
 using Physics_Engine.Core.Entity_Component_System;
+using Physics_Engine.Core.Interfaces;
 using Physics_Engine.Core.Physics_2D;
 using Physics_Engine.Core.Transform;
 using Physics_Engine.Math;
 
 namespace Physics_Engine.Core.Rigidbody
 {
-    public abstract class Rigidbody2D : Component, IMovement, IRotation
+    public class Rigidbody2D : Component, IMovement, IRotation
     {
-        private Vector2 _force = Vector2.Zero;
+        private Vector2 force = Vector2.Zero;
         private Transform.Transform Transform => Entity.Transform;
         public RigidbodyData Body { get; } = new();
 
@@ -18,74 +21,99 @@ namespace Physics_Engine.Core.Rigidbody
             set
             {
                 Transform.Rotation = value;
-                Body.IsTransformUpdateRequired = true;
+                UpdateColliderCaches();
             }
         }
+
         public Vector2 Position
         {
             get => Transform.Position;
             set
             {
                 Transform.Position = value;
-                Body.IsTransformUpdateRequired = true;
+                UpdateColliderCaches();
             }
         }
-        public abstract bool TryCreate();
-        public abstract AABBCollision GetAABB();
-        public abstract float CalculateRotationalInertia();
+
+        public override void Start()
+        {
+            var collider = Entity.Components.Get<Collider>();
+            if (collider == null)
+            {
+                return;
+            }
+            Body.Inertia = collider.CalculateRotationalInertia(Body.Mass);
+        }
+
+        public bool TryCreate()
+        {
+            return this.ValidateMaxDensity() && this.ValidateMinDensity();
+        }
+
         public void MoveByAmount(Vector2 amount)
         {
             Transform.Translate(amount);
-            Body.IsTransformUpdateRequired = true;
-            Body.IsAabbCollisionUpdateRequired = true;
+            UpdateColliderCaches();
         }
 
         public void MoveToExactPosition(Vector2 position)
         {
             Transform.Position = position;
-            Body.IsTransformUpdateRequired = true;
-            Body.IsAabbCollisionUpdateRequired = true;
+            UpdateColliderCaches();
         }
+
         public void RotateToExactAngle(float angle)
         {
             Transform.Rotation = angle;
-            Body.IsTransformUpdateRequired = true;
-            Body.IsAabbCollisionUpdateRequired = true;
+            UpdateColliderCaches();
         }
+
         public void RotateByAmount(float amount)
         {
             Transform.Rotate(amount);
-            Body.IsTransformUpdateRequired = true;
-            Body.IsAabbCollisionUpdateRequired = true;
+            UpdateColliderCaches();
         }
+
         public void Simulate(float time)
         {
             if (Body.IsStatic) return;
 
             time /= PhysicsSetting.Iterations;
-    
-            Vector2 acceleration = _force / Body.Mass;
+
+            Vector2 acceleration = force / Body.Mass;
             if (Body.HasGravity)
             {
-                acceleration += PhysicsSetting.GravityDirection; 
+                acceleration += PhysicsSetting.GravityDirection;
             }
 
             Body.LinearVelocity += acceleration * time;
 
             Position += Body.LinearVelocity * time;
             Rotation += Body.AngularVelocity * time;
-            _force = Vector2.Zero;
-            Body.IsTransformUpdateRequired = true;
-            Body.IsAabbCollisionUpdateRequired = true;
+            force = Vector2.Zero;
+
+            UpdateColliderCaches();
         }
 
         public void AddForce(Vector2 force)
         {
-            _force = force;
+            this.force = force;
         }
+
         public override bool IsAbleToDuplicate()
         {
             return false;
+        }
+
+        public AABBCollision GetAABB()
+        {
+            return Entity.Components.Get<Collider>().GetAABB();
+        }
+
+        private void UpdateColliderCaches()
+        {
+            var collider = Entity.Components.Get<Collider>();
+            collider?.InvalidateCaches();
         }
     }
 }

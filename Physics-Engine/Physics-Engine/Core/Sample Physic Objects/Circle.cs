@@ -25,16 +25,11 @@ public class Circle : Entity
             RenderOrder = 1,
             Entity = this,
         };
-        var rigidbody2D = new RigidbodyBuilder.Builder<CircleRigidbody2D>()
-            .WithArea(new CircleArea()
-            {
-                Radius = Transform.Scale.x
-            })
+        var rigidbody2D = new RigidbodyBuilder.Builder<Rigidbody2D>()
             .WithOwner(this)
             .Build();
         var collider = new CircleCollider()
         {
-            Radius = Transform.Scale.x,
             Entity = this
         };
         Components.Add(collider);

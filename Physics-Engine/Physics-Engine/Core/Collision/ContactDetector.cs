@@ -5,39 +5,39 @@ namespace Physics_Engine.Core.Collision;
 
 public static class ContactDetector
 {
-    public static void FindContactPoints(Rigidbody2D bodyA, Rigidbody2D bodyB, out Vector2 contact1,
+    public static void FindContactPoints(Collider bodyA, Collider bodyB, out Vector2 contact1,
         out Vector2 contact2, out int contactCount)
     {
         contact1 = Vector2.Zero;
         contact2 = Vector2.Zero;
         contactCount = 0;
-        if (bodyA is CircleRigidbody2D circleA && bodyB is CircleRigidbody2D circleB)
+        if (bodyA is CircleCollider circleA && bodyB is CircleCollider circleB)
         {
             FindCircleToCircleContactPoint(circleA, circleB, out contact1);
             contactCount = 1;
         }
 
-        if (bodyA is CircleRigidbody2D circleA1 && bodyB is BoxRigidbody2D boxB)
+        if (bodyA is CircleCollider circleA1 && bodyB is PolygonCollider boxB)
         {
             FindPolygonToCircleContactPoint(boxB, circleA1, out contact1);
             contactCount = 1;
         }
 
-        if (bodyA is BoxRigidbody2D boxA1 && bodyB is CircleRigidbody2D circleB2)
+        if (bodyA is PolygonCollider boxA1 && bodyB is CircleCollider circleB2)
         {
             FindPolygonToCircleContactPoint(boxA1, circleB2,
                 out contact1);
             contactCount = 1;
         }
 
-        if (bodyA is BoxRigidbody2D boxA2 && bodyB is BoxRigidbody2D boxB1)
+        if (bodyA is PolygonCollider boxA2 && bodyB is PolygonCollider boxB1)
         {
             FindPolygonToPolygonPoint(boxA2, boxB1, out contact1, out contact2,
                 out contactCount);
         }
     }
 
-    private static void FindCircleToCircleContactPoint(CircleRigidbody2D circleA, CircleRigidbody2D circleB,
+    private static void FindCircleToCircleContactPoint(CircleCollider circleA, CircleCollider circleB,
         out Vector2 contactPoint)
     {
         Vector2 ab = circleB.Position - circleA.Position;
@@ -46,7 +46,7 @@ public static class ContactDetector
         contactPoint = circleA.Position + direction * radius;
     }
 
-    private static void FindPolygonToCircleContactPoint(BoxRigidbody2D polygon, CircleRigidbody2D circle,
+    private static void FindPolygonToCircleContactPoint(PolygonCollider polygon, CircleCollider circle,
         out Vector2 contactPoint)
     {
         float minDistance = float.MaxValue;
@@ -68,7 +68,7 @@ public static class ContactDetector
         }
     }
 
-    static void FindPolygonToPolygonPoint(BoxRigidbody2D polygon1, BoxRigidbody2D polygon2,
+    static void FindPolygonToPolygonPoint(PolygonCollider polygon1, PolygonCollider polygon2,
         out Vector2 contactPoint1, out Vector2 contactPoint2, out int contactCount)
     {
         contactPoint1 = Vector2.Zero;

@@ -5,7 +5,7 @@ namespace Physics_Engine.Graphics
 {
     public class Camera2D
     {
-        public float Size = 50f;
+        public float Size = 100f;
         public Vector2 Position = Vector2.Zero;
         public float AspectRatio { get; private set; }
         public float Left { get; private set; }

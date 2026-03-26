@@ -26,7 +26,7 @@ namespace Physics_Engine.Graphics
         }
         private void OnLoad(object sender, System.EventArgs e)
         {
-            GL.ClearColor(Color4.Black);
+            GL.ClearColor(Color4.DimGray);
             GL.Disable(EnableCap.DepthTest);
             _camera = new Camera2D();
             _shapeRenderer = ShapeRenderer.Instance;
