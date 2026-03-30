@@ -78,6 +78,9 @@
         <Compile Include="Core\Rigidbody\Rigidbody2DExtensions.cs" />
         <Compile Include="Core\Sample Physic Objects\Box.cs" />
         <Compile Include="Core\Sample Physic Objects\Circle.cs" />
+        <Compile Include="Core\Raycast\Ray2D.cs" />
+        <Compile Include="Core\Raycast\Raycast2D.cs" />
+        <Compile Include="Core\Raycast\RaycastHit2D.cs" />
         <Compile Include="Core\Service Locator\IService.cs" />
         <Compile Include="Core\Service Locator\ServiceLocator.cs" />
         <Compile Include="Core\Time\Time.cs" />

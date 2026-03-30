@@ -11,6 +11,7 @@ using Physics_Engine.Core.Entity_Component_System;
 using Physics_Engine.Core.Input_System;
 using Physics_Engine.Core.Log_System;
 using Physics_Engine.Core.Physics_2D;
+using Physics_Engine.Core.Raycast;
 using Physics_Engine.Core.Rigidbody;
 using Physics_Engine.Core.Sample_Physic_Objects;
 using Physics_Engine.Core.Time;
@@ -43,6 +44,7 @@ namespace Physics_Engine
         private static string _wordStepTimeString = String.Empty;
         private static GameWindow _game;
         private static Entity _slope;
+        private static Line _line;
 
         public static void Main()
         {
@@ -69,10 +71,16 @@ namespace Physics_Engine
             //  AudioManager.Play("Music Source","0100_00061");
 
             SampleTimer.Start();
-            CreatePlayer();
+            //CreatePlayer();
             CreateGround();
             CreateSlope();
             CreateText();
+            
+            _line = new Line()
+            {
+                Color = Color4.Red,
+                Layer = LayerMask.Debug
+            };
         }
 
         private static void CreateSlope()
@@ -92,7 +100,8 @@ namespace Physics_Engine
             Rigidbody2D slopeRigidbody = new RigidbodyBuilder.Builder<Rigidbody2D>()
                 .WithOwner(_slope)
                 .WithState(true)
-                .WithRotation(_slope.Transform.Rotation)
+                .WithAngularVelocity(50)
+                .WithLinearVelocity(new Vector2(1, 0))
                 .Build();
             PolygonCollider slopeCollider = new PolygonCollider()
             {
@@ -117,17 +126,18 @@ namespace Physics_Engine
                     RenderOrder = 5
                 };
             _player.Components.Add(sprite);
-            
+
             Rigidbody2D playerRigidbody2D = new RigidbodyBuilder.Builder<Rigidbody2D>()
                 .WithOwner(_player)
                 .WithGravityState(true)
                 .WithState(false)
                 .WithMass(1)
                 .Build();
-            
+
             PolygonCollider playerCollider = new PolygonCollider()
             {
-                Entity = _player
+                Entity = _player,
+                IsTrigger = true
             };
             _player.Components.Add(playerCollider);
             _player.Components.Add(playerRigidbody2D);
@@ -178,6 +188,7 @@ namespace Physics_Engine
             ground.Components.Add(groundRb);
             ground.Components.Add(groundRenderer);
         }
+
         private static void CreateRandomBodiesAndPlayer()
         {
             _player = new Core.Sample_Physic_Objects.Circle("Player");
@@ -259,16 +270,29 @@ namespace Physics_Engine
                     .ToString(CultureInfo.InvariantCulture);
                 _wordStepTimeString = System.Math.Round(_totalStepTime / (double)_totalSampleCount, 4)
                     .ToString(CultureInfo.InvariantCulture);
-                Logger.LogWarning($"Body Count : {_bodyCountString}");
-                Logger.LogWarning($"Sample Time Count : {_totalSampleCount}");
-                Logger.LogWarning($"Step Time: {_totalStepTime}");
-                
+                //Logger.LogWarning($"Body Count : {_bodyCountString}");
+                //Logger.LogWarning($"Sample Time Count : {_totalSampleCount}");
+                //Logger.LogWarning($"Step Time: {_totalStepTime}");
+
                 _totalSBodyCount = 0;
                 _totalStepTime = 0;
                 _totalSampleCount = 0;
                 SampleTimer.Restart();
             }
+
 //Logger.Log($"X: {_player.Transform.Position.x} Y: {_player.Transform.Position.y}");
+            Vector2 origin = Vector2.Right * 10;
+            Vector2 direction = Vector2.One * -1;
+            float length = 50;
+            Ray2D ray2D = new Ray2D(origin, direction, length);
+            if (Raycast2D.Raycast(ray2D, _physicsContext.GetColliders(), out RaycastHit2D hit2D))
+            {
+                Logger.LogWarning(
+                    $"Raycast hit:{hit2D.Collider.Entity.Name} at position: {hit2D.Point} with normal: {hit2D.Normal} with distance: {hit2D.Distance}");
+                _line.EndPosition = hit2D.Point.ConvertFromOpenTk();
+                _line.StartPosition = origin.ConvertFromOpenTk();
+            }
+
             Watch.Restart();
             _entityContainer.Update();
             _physicsContext.Simulate(Time.DeltaTimeFloat);

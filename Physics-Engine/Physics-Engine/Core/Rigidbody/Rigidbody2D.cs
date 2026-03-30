@@ -18,7 +18,7 @@ namespace Physics_Engine.Core.Rigidbody
         public float Rotation
         {
             get => Transform.Rotation;
-            set
+            private set
             {
                 Transform.Rotation = value;
                 UpdateColliderCaches();
@@ -28,7 +28,7 @@ namespace Physics_Engine.Core.Rigidbody
         public Vector2 Position
         {
             get => Transform.Position;
-            set
+            private set
             {
                 Transform.Position = value;
                 UpdateColliderCaches();

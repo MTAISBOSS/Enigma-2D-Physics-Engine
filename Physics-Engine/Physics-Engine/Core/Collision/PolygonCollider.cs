@@ -1,5 +1,6 @@
 ﻿using Physics_Engine.Core.Interfaces;
 using Physics_Engine.Core.Log_System;
+using Physics_Engine.Core.Physics_2D;
 using Physics_Engine.Core.Rigidbody;
 using Physics_Engine.Math;
 
@@ -11,6 +12,7 @@ namespace Physics_Engine.Core.Collision
         public int[] Indices { get; set; }
         public Vector2[] Vertices { get; set; }
         public Vector2[] TransformedVertices { get; set; }
+
         public override void Start()
         {
             BoxArea = new BoxArea(Entity.Transform.Scale.x, Entity.Transform.Scale.y);
@@ -18,9 +20,13 @@ namespace Physics_Engine.Core.Collision
             Indices = CreateIndices();
             IsTransformUpdateRequired = true;
             TransformedVertices = new Vector2[Vertices.Length];
-           Logger.LogError($"PolygonCollider created for {Entity.Name} at position {Position}");
+            Service_Locator.ServiceLocator.Instance.Get<PhysicsContext>().RegisterCollider(this);
         }
 
+        ~PolygonCollider()
+        {
+            Service_Locator.ServiceLocator.Instance.Get<PhysicsContext>().UnregisterCollider(this);
+        }
         public override bool Intersects(Collider other, out CollisionInfo collisionInfo)
         {
             collisionInfo = new CollisionInfo();

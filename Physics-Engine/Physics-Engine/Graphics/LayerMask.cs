@@ -2,6 +2,7 @@
 
 public enum LayerMask
 {
+    Debug,
     UI,
     World
 }

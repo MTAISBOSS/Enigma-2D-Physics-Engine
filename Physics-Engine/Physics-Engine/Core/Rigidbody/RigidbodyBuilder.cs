@@ -10,19 +10,7 @@ public class RigidbodyBuilder
     public class Builder<T> where T : Rigidbody2D, new()
     {
         private readonly T _instance = new();
-
-        public Builder<T> WithPosition(Vector2 position)
-        {
-            _instance.Position = position;
-            return this;
-        }
-
-        public Builder<T> WithRotation(float rotation)
-        {
-            _instance.Rotation = rotation;
-            return this;
-        }
-
+        
         public Builder<T> WithLinearVelocity(Vector2 velocity)
         {
             _instance.Body.LinearVelocity = velocity;

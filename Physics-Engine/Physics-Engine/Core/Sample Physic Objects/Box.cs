@@ -34,7 +34,7 @@ public class Box : Entity
         var collider = new PolygonCollider
         {
             Entity = this,
-            Material = new PhysicMaterial(0,1,1,1)
+            Material = new PhysicMaterial(1,1,1)
         };
         Components.Add(collider);
         Components.Add(rigidbody2D);

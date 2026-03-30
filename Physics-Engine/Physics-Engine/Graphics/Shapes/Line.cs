@@ -6,6 +6,15 @@ namespace Physics_Engine.Graphics.Shapes
     public class Line : Shape2D
     {
         public Vector2 StartPosition;
+        public Line()
+        {
+            ShapeRenderer.Instance.Renderables.Add(this);
+        }
+
+        ~Line()
+        {
+            ShapeRenderer.Instance.Renderables.Remove(this);
+        }
         public Vector2 EndPosition;
         public override void Draw()
         {

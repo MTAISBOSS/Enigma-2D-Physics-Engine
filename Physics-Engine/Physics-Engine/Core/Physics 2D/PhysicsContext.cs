@@ -25,6 +25,7 @@ namespace Physics_Engine.Core.Physics_2D
     public class PhysicsContext : IService
     {
         private readonly List<Rigidbody2D> rigidbody2Ds = new(100);
+        private readonly List<Collider> colliders = new(100);
         private readonly List<ContactPair> contactPairs = new(100);
         private AABBCollision[] cachedAabBs = new AABBCollision[100];
 
@@ -56,6 +57,18 @@ namespace Physics_Engine.Core.Physics_2D
         public void UnregisterRigidbody(Rigidbody2D rigidbody2D)
         {
             rigidbody2Ds.Remove(rigidbody2D);
+        } 
+        public void RegisterCollider(Collider collider)
+        {
+            if (!colliders.Contains(collider))
+            {
+                colliders.Add(collider);
+            }
+        }
+
+        public void UnregisterCollider(Collider collider)
+        {
+            colliders.Remove(collider);
         }
 
         public void Simulate(float time)
@@ -203,6 +216,11 @@ namespace Physics_Engine.Core.Physics_2D
                 rigidbody2Ds[i] = rigidbody2Ds[rigidbody2Ds.Count - 1];
                 rigidbody2Ds.RemoveAt(rigidbody2Ds.Count - 1);
             }
+        }
+
+        public List<Collider> GetColliders()
+        {
+            return colliders;
         }
     }
 }

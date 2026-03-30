@@ -1,4 +1,5 @@
 ﻿using Physics_Engine.Core.Log_System;
+using Physics_Engine.Core.Physics_2D;
 using Physics_Engine.Core.Rigidbody;
 using Physics_Engine.Math;
 
@@ -16,7 +17,12 @@ namespace Physics_Engine.Core.Collision
         {
             CircleArea = new CircleArea(Entity.Transform.Scale.x);
             IsTransformUpdateRequired = true;
-            Logger.LogError($"CircleCollider created for {Entity.Name} at position {Position}");
+            Service_Locator.ServiceLocator.Instance.Get<PhysicsContext>().RegisterCollider(this);
+        }
+
+        ~CircleCollider()
+        {
+            Service_Locator.ServiceLocator.Instance.Get<PhysicsContext>().UnregisterCollider(this);
         }
         public override AABBCollision GetAABB()
         {

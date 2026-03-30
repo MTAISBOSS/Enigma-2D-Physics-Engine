@@ -7,7 +7,9 @@ namespace Physics_Engine.Graphics
     public class ShapeRenderer
     {
         private static ShapeRenderer _instance;
-
+        private IRender[] uiElements;
+        private IRender[] worldElements;
+        private IRender[] debugElements;
         public static ShapeRenderer Instance
         {
             get
@@ -28,13 +30,15 @@ namespace Physics_Engine.Graphics
         {
             DebugRenderer2D.Begin();
 
-            var uiElements = Renderables.Where(o => o.GetLayerMask() == LayerMask.UI).ToArray();
-            var worldElements = Renderables.Where(o => o.GetLayerMask() == LayerMask.World).ToArray();
+            uiElements = Renderables.Where(o => o.GetLayerMask() == LayerMask.UI).ToArray();
+            worldElements = Renderables.Where(o => o.GetLayerMask() == LayerMask.World).ToArray();
+            debugElements = Renderables.Where(o => o.GetLayerMask() == LayerMask.Debug).ToArray();
             foreach (var r in worldElements)
                 r.Draw();
             foreach (var r in uiElements)
                 r.Draw();           
-            
+            foreach (var r in debugElements)
+                r.Draw();
            
 
             DebugRenderer2D.End();

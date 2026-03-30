@@ -47,7 +47,7 @@ public abstract class Collider : Component
     }
     public override void Start()
     {
-        Material = new PhysicMaterial(0, 1, 0.6f, 1);
+        Material = new PhysicMaterial(1, 0.6f, 1);
     }
 
     public void OnTriggerEnter(Collider other)
