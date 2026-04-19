@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Enigma_Editor.Views.Inspector.InspectorPanelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="clr-namespace:Enigma_Editor.Views"
+             xmlns:components="clr-namespace:Enigma_Editor.Views.Components">
+    <DockPanel>
+
+
+        <Grid DockPanel.Dock="Top">
+            <TextBlock Text="Inspector"
+                       Background="#1A1821"
+                       Foreground="#E2E2E5"
+                       FontSize="12"
+                       Padding="5" />
+        </Grid>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <ItemsControl ItemsSource="{Binding Components}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <components:ComponentView />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <Button Style="{StaticResource EditorButton}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Padding="4"
+                                   VerticalAlignment="Center"
+                                   Text="Add Component" />
+                        <Image Width="10"
+                               Source="pack://application:,,,/assets/icons/Asset (11).png" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
+
+    </DockPanel>
+</UserControl>

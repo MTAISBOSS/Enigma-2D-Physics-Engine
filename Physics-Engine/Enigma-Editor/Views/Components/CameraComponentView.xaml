@@ -1,0 +1,20 @@
+﻿<UserControl x:Class="Enigma_Editor.Views.Components.CameraComponentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:views="clr-namespace:Enigma_Editor.Views"
+             xmlns:fields="clr-namespace:Enigma_Editor.Views.Fields">
+
+    <StackPanel>
+
+        <fields:Vector1DView Label="Ortho Size"
+                            Value="{Binding OrthoSize}" />
+
+        <Separator />
+
+        <fields:Vector2DView Label="Position"
+                            X="{Binding PositionX}"
+                            Y="{Binding PositionY}" />
+
+    </StackPanel>
+
+</UserControl>

@@ -1,0 +1,29 @@
+﻿using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
+
+namespace Enigma_Framework.Graphics.Shapes;
+
+public class Line : Shape2D
+{
+    public Vector2 EndPosition;
+    public Vector2 StartPosition;
+
+    public Line()
+    {
+        ShapeRenderer.Instance.Renderables.Add(this);
+    }
+
+    ~Line()
+    {
+        ShapeRenderer.Instance.Renderables.Remove(this);
+    }
+
+    public override void Draw()
+    {
+        GL.Color4(Color);
+        var center = (StartPosition + EndPosition) / 2;
+        DebugRenderer2D.Push(center.X, center.Y, Rotation);
+        DebugRenderer2D.DrawLine(StartPosition, EndPosition);
+        DebugRenderer2D.Pop();
+    }
+}

@@ -1,0 +1,115 @@
+﻿<Window x:Class="Enigma_Editor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Enigma_Editor.ViewModels"
+        xmlns:views="clr-namespace:Enigma_Editor.Views"
+        xmlns:assets="clr-namespace:Enigma_Editor.Views.Assets"
+        xmlns:inspector="clr-namespace:Enigma_Editor.Views.Inspector"
+        xmlns:hierarchy="clr-namespace:Enigma_Editor.Views.Hierarchy"
+        xmlns:gameStateToolbar="clr-namespace:Enigma_Editor.Views.GameStateToolbar"
+        xmlns:sideToolbar="clr-namespace:Enigma_Editor.Views.SideToolbar"
+        xmlns:scene="clr-namespace:Enigma_Editor.Views.Scene"
+        xmlns:menuBar="clr-namespace:Enigma_Editor.Views.MenuBar"
+        xmlns:console="clr-namespace:Enigma_Editor.Views.Console"
+        Title="Enigma Editor"
+        Height="600"
+        Width="1000"
+        Background="#121017">
+    <Window.Resources>
+
+        <HierarchicalDataTemplate
+            DataType="{x:Type vm:HierarchyItemViewModel}"
+            ItemsSource="{Binding Children}">
+
+            <StackPanel Orientation="Horizontal">
+                <Image Source="{Binding Icon}" Width="12" Margin="0,0,8,0" />
+                <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+
+        </HierarchicalDataTemplate>
+
+
+    </Window.Resources>
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.8*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="16*" />
+            <RowDefinition Height="10*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        
+        <menuBar:MenuBarView Grid.Row="0" Grid.ColumnSpan="4" />
+        <gameStateToolbar:GameStateToolbarView Grid.Row="1" Grid.ColumnSpan="4" Grid.Column="0" />
+        <hierarchy:HierarchyPanelView x:Name="HierarchyView" Grid.Row="2" Grid.Column="0" />
+        <sideToolbar:SideToolbarView Grid.Row="2" Grid.Column="1" />
+        <scene:SceneView Grid.Row="2" Grid.Column="2" />
+
+        
+        <inspector:InspectorPanelView x:Name="InspectorPanel"
+                                      Grid.Row="2"
+                                      Grid.Column="3"
+                                      DataContext="{Binding ElementName=HierarchyView,Path=SelectedItem}" />
+        <!-- Bottom Panel -->
+        <Border Grid.Row="3"
+                Grid.ColumnSpan="4" Grid.Column="0"
+                Background="#22202C"
+                BorderBrush="#2B2836"
+                BorderThickness="1">
+
+            <TabControl Style="{StaticResource EditorTabControl}">
+
+                <!-- TAB HEADER STYLE -->
+                <TabControl.Resources>
+                    <Style TargetType="TabItem">
+                        <Setter Property="Background" Value="#1A1821" />
+                        <Setter Property="Foreground" Value="#E2E2E5" />
+                        <Setter Property="Padding" Value="10,4" />
+                        <Setter Property="Margin" Value="2,0,0,0" />
+                    </Style>
+                </TabControl.Resources>
+
+                <!-- ASSETS TAB -->
+                <TabItem Header="Assets"
+                         Style="{StaticResource EditorTabStyle}">
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- FOLDER TREE -->
+                        <TreeView
+                            Background="#1A1821"
+                            BorderThickness="1">
+                            <assets:FolderTreeView />
+                        </TreeView>
+                        <!-- FILE GRID -->
+                        <console:FileGridView Grid.Column="1" />
+                    </Grid>
+
+                </TabItem>
+
+
+                <!-- CONSOLE TAB -->
+                <TabItem Header="Console"
+                         Style="{StaticResource EditorTabStyle}">
+                    <views:ConsoleView />
+                </TabItem>
+
+            </TabControl>
+
+        </Border>
+
+    </Grid>
+</Window>

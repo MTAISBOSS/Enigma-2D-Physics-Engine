@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="Enigma_Editor.Views.Fields.Vector1DView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Background="Transparent" ShowGridLines="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Property Name -->
+        <TextBlock Grid.Column="0"
+                   Padding="5"
+                   Text="{Binding Label, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   VerticalAlignment="Center"
+                   Foreground="White" />
+
+        <StackPanel Orientation="Horizontal" Grid.Column="1">
+
+            <StackPanel Orientation="Horizontal" Margin="5 0">
+
+                <TextBlock Text=" "
+                           FontSize="10"
+                           Foreground="White"
+                           Margin="5"
+                           VerticalAlignment="Center" />
+
+                <TextBox Width="40"
+                         Height="20"
+                         Style="{StaticResource EditorTextBox}"
+                         FontSize="8"
+                         TextWrapping="NoWrap"
+                         TextAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         HorizontalContentAlignment="Center"
+                         Text="{Binding Value,
+                                RelativeSource={RelativeSource AncestorType=UserControl},
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

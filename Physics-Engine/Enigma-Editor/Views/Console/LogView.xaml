@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="Enigma_Editor.Views.LogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+        <ListBox Background="#22202C"
+                 BorderThickness="0">
+
+            <ListBoxItem Foreground="White">[Info] Engine started</ListBoxItem>
+            <ListBoxItem Foreground="Gold">[Warning] Missing texture</ListBoxItem>
+            <ListBoxItem Foreground="Red">[Error] Shader compilation failed</ListBoxItem>
+
+        </ListBox>
+
+    </ScrollViewer>
+
+</UserControl>

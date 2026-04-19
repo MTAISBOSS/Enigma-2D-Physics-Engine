@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Physics-Engine", "Physics-Engine\Physics-Engine.csproj", "{CBB502DE-AC14-4C06-8CA4-9DBB1B8F0BEF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma-Editor", "Enigma-Editor\Enigma-Editor.csproj", "{746729BC-D030-414B-A303-9F7E6832091E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enigma-Framework", "Enigma-Framework\Enigma-Framework.csproj", "{C31B7679-A257-4567-8690-24220DB91841}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -8,9 +10,11 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CBB502DE-AC14-4C06-8CA4-9DBB1B8F0BEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CBB502DE-AC14-4C06-8CA4-9DBB1B8F0BEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CBB502DE-AC14-4C06-8CA4-9DBB1B8F0BEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CBB502DE-AC14-4C06-8CA4-9DBB1B8F0BEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{746729BC-D030-414B-A303-9F7E6832091E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{746729BC-D030-414B-A303-9F7E6832091E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C31B7679-A257-4567-8690-24220DB91841}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C31B7679-A257-4567-8690-24220DB91841}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C31B7679-A257-4567-8690-24220DB91841}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C31B7679-A257-4567-8690-24220DB91841}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

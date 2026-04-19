@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Enigma_Editor.Views.Components.TransformView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Enigma_Editor.Views"
+             xmlns:fields="clr-namespace:Enigma_Editor.Views.Fields">
+    <StackPanel>
+        <fields:Vector2DView Label="Position"
+                            X="{Binding PositionX}"
+                            Y="{Binding PositionY}" />
+
+        <Separator />
+        <fields:Vector1DView Label="Rotation"
+                            Value="{Binding RotationX}" />
+
+        <Separator />
+
+        <fields:Vector2DView Label="Scale"
+                            X="{Binding ScaleX}"
+                            Y="{Binding ScaleY}" />
+
+    </StackPanel>
+</UserControl>

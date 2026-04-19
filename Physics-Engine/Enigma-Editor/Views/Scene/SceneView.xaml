@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Enigma_Editor.Views.Scene.SceneView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:wpf="clr-namespace:OpenTK.Wpf;assembly=GLWpfControl"
+             Loaded="Window_Loaded">
+    <Border Background="#121017">
+        <wpf:GLWpfControl
+            x:Name="OpenTkControl"
+            Ready="OpenTkControl_OnReady"
+            Render="OpenTkControl_OnRender"
+            SizeChanged="OpenTkControl_SizeChanged"
+            Focusable="True"
+            PreviewKeyDown="OpenTkControl_PreviewKeyDown"
+            PreviewKeyUp="OpenTkControl_PreviewKeyUp"
+            PreviewMouseMove="OpenTkControl_PreviewMouseMove"
+            PreviewMouseDown="OpenTkControl_PreviewMouseDown"
+            PreviewMouseUp="OpenTkControl_PreviewMouseUp" />
+    </Border>
+</UserControl>
