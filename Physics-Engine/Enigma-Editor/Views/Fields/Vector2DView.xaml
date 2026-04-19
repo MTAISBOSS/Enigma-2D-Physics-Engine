@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="Enigma_Editor.Views.Fields.Vector2DView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="Transparent" ShowGridLines="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Property Name -->
+        <TextBlock Grid.Column="0"
+                   Padding="5"
+                   Text="{Binding Label, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   VerticalAlignment="Center"
+                   Foreground="White" />
+
+        <!-- X Y Fields -->
+        <StackPanel Orientation="Horizontal" Grid.Column="1">
+
+            <StackPanel Orientation="Horizontal" Margin="5 0">
+                <TextBlock Text="X"
+                           FontSize="10"
+                           Foreground="Red"
+                           Margin="5"
+                           VerticalAlignment="Center" />
+
+                <TextBox Width="40"
+                         Height="20"
+                         Style="{StaticResource EditorTextBox}"
+                         FontSize="8"
+                         TextWrapping="NoWrap"
+                         TextAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         HorizontalContentAlignment="Center"
+                         Text="{Binding X,
+                                RelativeSource={RelativeSource AncestorType=UserControl},
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="5 0">
+                <TextBlock Text="Y"
+                           FontSize="10"
+                           Foreground="DodgerBlue"
+                           Margin="5"
+                           VerticalAlignment="Center" />
+
+                <TextBox Width="40"
+                         Height="20"
+                         FontSize="8"
+                         TextWrapping="NoWrap"
+                         TextAlignment="Center"
+                         VerticalContentAlignment="Center"
+                         HorizontalContentAlignment="Center"
+                         Style="{StaticResource EditorTextBox}"
+                         Text="{Binding Y,
+                                RelativeSource={RelativeSource AncestorType=UserControl},
+                                Mode=TwoWay,
+                                UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+</UserControl>

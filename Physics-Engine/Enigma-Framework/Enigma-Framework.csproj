@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <RootNamespace>Enigma_Framework</RootNamespace>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>default</LangVersion>
+        <OutputType>Exe</OutputType>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+      <PackageReference Include="OpenTK" Version="4.7.7" />
+      <PackageReference Include="OpenTK.Mathematics" Version="4.7.7" />
+      <PackageReference Include="OpenTK.Windowing.Common" Version="4.7.7" />
+      <PackageReference Include="Silk.NET.Core" Version="2.23.0" />
+      <PackageReference Include="Silk.NET.Input" Version="2.23.0" />
+      <PackageReference Include="Silk.NET.Maths" Version="2.23.0" />
+      <PackageReference Include="Silk.NET.OpenGL" Version="2.23.0" />
+      <PackageReference Include="StbTrueTypeSharp" Version="1.26.12" />
+      <PackageReference Include="System.Drawing.Common" Version="10.0.5" />
+    </ItemGroup>
+
+
+</Project>

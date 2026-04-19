@@ -1,6 +1,0 @@
-E:\Save Folder\Physics Engine C#\Physics-Engine\Physics-Engine\bin\Debug\Physics_Engine.dll
-E:\Save Folder\Physics Engine C#\Physics-Engine\Physics-Engine\bin\Debug\Physics_Engine.pdb
-E:\Save Folder\Physics Engine C#\Physics-Engine\Physics-Engine\obj\Debug\Physics-Engine.csproj.AssemblyReference.cache
-E:\Save Folder\Physics Engine C#\Physics-Engine\Physics-Engine\obj\Debug\Physics-Engine.csproj.CoreCompileInputs.cache
-E:\Save Folder\Physics Engine C#\Physics-Engine\Physics-Engine\obj\Debug\Physics_Engine.dll
-E:\Save Folder\Physics Engine C#\Physics-Engine\Physics-Engine\obj\Debug\Physics_Engine.pdb

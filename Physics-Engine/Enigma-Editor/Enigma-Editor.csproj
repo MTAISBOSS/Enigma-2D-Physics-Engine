@@ -1,0 +1,400 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net8.0-windows</TargetFramework>
+        <RootNamespace>Enigma_Editor</RootNamespace>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+
+        <UseWPF>true</UseWPF>
+        <UseWindowsForms>true</UseWindowsForms>
+
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Enigma-Framework\Enigma-Framework.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Dirkster.AvalonDock" Version="4.73.0"/>
+        <PackageReference Include="OpenTK.GLWpfControl" Version="4.3.1"/>
+        <PackageReference Include="StbTrueTypeSharp" Version="1.26.12"/>
+        <PackageReference Include="System.Drawing.Common" Version="10.0.5"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="assets"/>
+        <Folder Include="Models"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Remove="assets\icons\Down Arrow.png"/>
+        <Resource Include="assets\icons\Down Arrow.png"/>
+        <None Remove="assets\icons\Up Arrow.png"/>
+        <Resource Include="assets\icons\Up Arrow.png"/>
+        <None Remove="assets\icons\32.png"/>
+        <Resource Include="assets\icons\32.png"/>
+        <None Remove="assets\icons\128.png"/>
+        <Resource Include="assets\icons\128.png"/>
+        <None Remove="assets\icons\128 Light.png"/>
+        <Resource Include="assets\icons\128 Light.png"/>
+        <None Remove="assets\icons\128 Light 2.png"/>
+        <Resource Include="assets\icons\128 Light 2.png"/>
+        <None Remove="assets\icons\32 Light.png"/>
+        <Resource Include="assets\icons\32 Light.png"/>
+        <None Remove="assets\icons\32 Light 2.png"/>
+        <Resource Include="assets\icons\32 Light 2.png"/>
+        <None Remove="assets\icons\64.png"/>
+        <Resource Include="assets\icons\64.png"/>
+        <None Remove="assets\icons\64 Light.png"/>
+        <Resource Include="assets\icons\64 Light.png"/>
+        <None Remove="assets\icons\64 Light 2.png"/>
+        <Resource Include="assets\icons\64 Light 2.png"/>
+        <None Remove="assets\icons\A.png"/>
+        <Resource Include="assets\icons\A.png"/>
+        <None Remove="assets\icons\Add Icon.png"/>
+        <Resource Include="assets\icons\Add Icon.png"/>
+        <None Remove="assets\icons\Asset (1).png"/>
+        <Resource Include="assets\icons\Asset (1).png"/>
+        <None Remove="assets\icons\Asset (10).png"/>
+        <Resource Include="assets\icons\Asset (10).png"/>
+        <None Remove="assets\icons\Asset (100).png"/>
+        <Resource Include="assets\icons\Asset (100).png"/>
+        <None Remove="assets\icons\Asset (101).png"/>
+        <Resource Include="assets\icons\Asset (101).png"/>
+        <None Remove="assets\icons\Asset (11).png"/>
+        <Resource Include="assets\icons\Asset (11).png"/>
+        <None Remove="assets\icons\Asset (12).png"/>
+        <Resource Include="assets\icons\Asset (12).png"/>
+        <None Remove="assets\icons\Asset (13).png"/>
+        <Resource Include="assets\icons\Asset (13).png"/>
+        <None Remove="assets\icons\Asset (14).png"/>
+        <Resource Include="assets\icons\Asset (14).png"/>
+        <None Remove="assets\icons\Asset (15).png"/>
+        <Resource Include="assets\icons\Asset (15).png"/>
+        <None Remove="assets\icons\Asset (16).png"/>
+        <Resource Include="assets\icons\Asset (16).png"/>
+        <None Remove="assets\icons\Asset (17).png"/>
+        <Resource Include="assets\icons\Asset (17).png"/>
+        <None Remove="assets\icons\Asset (18).png"/>
+        <Resource Include="assets\icons\Asset (18).png"/>
+        <None Remove="assets\icons\Asset (19).png"/>
+        <Resource Include="assets\icons\Asset (19).png"/>
+        <None Remove="assets\icons\Asset (2).png"/>
+        <Resource Include="assets\icons\Asset (2).png"/>
+        <None Remove="assets\icons\Asset (20).png"/>
+        <Resource Include="assets\icons\Asset (20).png"/>
+        <None Remove="assets\icons\Asset (21).png"/>
+        <Resource Include="assets\icons\Asset (21).png"/>
+        <None Remove="assets\icons\Asset (22).png"/>
+        <Resource Include="assets\icons\Asset (22).png"/>
+        <None Remove="assets\icons\Asset (23).png"/>
+        <Resource Include="assets\icons\Asset (23).png"/>
+        <None Remove="assets\icons\Asset (24).png"/>
+        <Resource Include="assets\icons\Asset (24).png"/>
+        <None Remove="assets\icons\Asset (25).png"/>
+        <Resource Include="assets\icons\Asset (25).png"/>
+        <None Remove="assets\icons\Asset (26).png"/>
+        <Resource Include="assets\icons\Asset (26).png"/>
+        <None Remove="assets\icons\Asset (27).png"/>
+        <Resource Include="assets\icons\Asset (27).png"/>
+        <None Remove="assets\icons\Asset (28).png"/>
+        <Resource Include="assets\icons\Asset (28).png"/>
+        <None Remove="assets\icons\Asset (29).png"/>
+        <Resource Include="assets\icons\Asset (29).png"/>
+        <None Remove="assets\icons\Asset (3).png"/>
+        <Resource Include="assets\icons\Asset (3).png"/>
+        <None Remove="assets\icons\Asset (30).png"/>
+        <Resource Include="assets\icons\Asset (30).png"/>
+        <None Remove="assets\icons\Asset (31).png"/>
+        <Resource Include="assets\icons\Asset (31).png"/>
+        <None Remove="assets\icons\Asset (32).png"/>
+        <Resource Include="assets\icons\Asset (32).png"/>
+        <None Remove="assets\icons\Asset (33).png"/>
+        <Resource Include="assets\icons\Asset (33).png"/>
+        <None Remove="assets\icons\Asset (34).png"/>
+        <Resource Include="assets\icons\Asset (34).png"/>
+        <None Remove="assets\icons\Asset (35).png"/>
+        <Resource Include="assets\icons\Asset (35).png"/>
+        <None Remove="assets\icons\Asset (36).png"/>
+        <Resource Include="assets\icons\Asset (36).png"/>
+        <None Remove="assets\icons\Asset (37).png"/>
+        <Resource Include="assets\icons\Asset (37).png"/>
+        <None Remove="assets\icons\Asset (38).png"/>
+        <Resource Include="assets\icons\Asset (38).png"/>
+        <None Remove="assets\icons\Asset (39).png"/>
+        <Resource Include="assets\icons\Asset (39).png"/>
+        <None Remove="assets\icons\Asset (4).png"/>
+        <Resource Include="assets\icons\Asset (4).png"/>
+        <None Remove="assets\icons\Asset (40).png"/>
+        <Resource Include="assets\icons\Asset (40).png"/>
+        <None Remove="assets\icons\Asset (41).png"/>
+        <Resource Include="assets\icons\Asset (41).png"/>
+        <None Remove="assets\icons\Asset (42).png"/>
+        <Resource Include="assets\icons\Asset (42).png"/>
+        <None Remove="assets\icons\Asset (43).png"/>
+        <Resource Include="assets\icons\Asset (43).png"/>
+        <None Remove="assets\icons\Asset (44).png"/>
+        <Resource Include="assets\icons\Asset (44).png"/>
+        <None Remove="assets\icons\Asset (45).png"/>
+        <Resource Include="assets\icons\Asset (45).png"/>
+        <None Remove="assets\icons\Asset (46).png"/>
+        <Resource Include="assets\icons\Asset (46).png"/>
+        <None Remove="assets\icons\Asset (47).png"/>
+        <Resource Include="assets\icons\Asset (47).png"/>
+        <None Remove="assets\icons\Asset (48).png"/>
+        <Resource Include="assets\icons\Asset (48).png"/>
+        <None Remove="assets\icons\Asset (49).png"/>
+        <Resource Include="assets\icons\Asset (49).png"/>
+        <None Remove="assets\icons\Asset (5).png"/>
+        <Resource Include="assets\icons\Asset (5).png"/>
+        <None Remove="assets\icons\Asset (50).png"/>
+        <Resource Include="assets\icons\Asset (50).png"/>
+        <None Remove="assets\icons\Asset (51).png"/>
+        <Resource Include="assets\icons\Asset (51).png"/>
+        <None Remove="assets\icons\Asset (52).png"/>
+        <Resource Include="assets\icons\Asset (52).png"/>
+        <None Remove="assets\icons\Asset (53).png"/>
+        <Resource Include="assets\icons\Asset (53).png"/>
+        <None Remove="assets\icons\Asset (54).png"/>
+        <Resource Include="assets\icons\Asset (54).png"/>
+        <None Remove="assets\icons\Asset (55).png"/>
+        <Resource Include="assets\icons\Asset (55).png"/>
+        <None Remove="assets\icons\Asset (56).png"/>
+        <Resource Include="assets\icons\Asset (56).png"/>
+        <None Remove="assets\icons\Asset (57).png"/>
+        <Resource Include="assets\icons\Asset (57).png"/>
+        <None Remove="assets\icons\Asset (58).png"/>
+        <Resource Include="assets\icons\Asset (58).png"/>
+        <None Remove="assets\icons\Asset (59).png"/>
+        <Resource Include="assets\icons\Asset (59).png"/>
+        <None Remove="assets\icons\Asset (6).png"/>
+        <Resource Include="assets\icons\Asset (6).png"/>
+        <None Remove="assets\icons\Asset (60).png"/>
+        <Resource Include="assets\icons\Asset (60).png"/>
+        <None Remove="assets\icons\Asset (61).png"/>
+        <Resource Include="assets\icons\Asset (61).png"/>
+        <None Remove="assets\icons\Asset (62).png"/>
+        <Resource Include="assets\icons\Asset (62).png"/>
+        <None Remove="assets\icons\Asset (63).png"/>
+        <Resource Include="assets\icons\Asset (63).png"/>
+        <None Remove="assets\icons\Asset (64).png"/>
+        <Resource Include="assets\icons\Asset (64).png"/>
+        <None Remove="assets\icons\Asset (65).png"/>
+        <Resource Include="assets\icons\Asset (65).png"/>
+        <None Remove="assets\icons\Asset (66).png"/>
+        <Resource Include="assets\icons\Asset (66).png"/>
+        <None Remove="assets\icons\Asset (67).png"/>
+        <Resource Include="assets\icons\Asset (67).png"/>
+        <None Remove="assets\icons\Asset (68).png"/>
+        <Resource Include="assets\icons\Asset (68).png"/>
+        <None Remove="assets\icons\Asset (69).png"/>
+        <Resource Include="assets\icons\Asset (69).png"/>
+        <None Remove="assets\icons\Asset (7).png"/>
+        <Resource Include="assets\icons\Asset (7).png"/>
+        <None Remove="assets\icons\Asset (70).png"/>
+        <Resource Include="assets\icons\Asset (70).png"/>
+        <None Remove="assets\icons\Asset (71).png"/>
+        <Resource Include="assets\icons\Asset (71).png"/>
+        <None Remove="assets\icons\Asset (72).png"/>
+        <Resource Include="assets\icons\Asset (72).png"/>
+        <None Remove="assets\icons\Asset (73).png"/>
+        <Resource Include="assets\icons\Asset (73).png"/>
+        <None Remove="assets\icons\Asset (74).png"/>
+        <Resource Include="assets\icons\Asset (74).png"/>
+        <None Remove="assets\icons\Asset (75).png"/>
+        <Resource Include="assets\icons\Asset (75).png"/>
+        <None Remove="assets\icons\Asset (76).png"/>
+        <Resource Include="assets\icons\Asset (76).png"/>
+        <None Remove="assets\icons\Asset (77).png"/>
+        <Resource Include="assets\icons\Asset (77).png"/>
+        <None Remove="assets\icons\Asset (78).png"/>
+        <Resource Include="assets\icons\Asset (78).png"/>
+        <None Remove="assets\icons\Asset (79).png"/>
+        <Resource Include="assets\icons\Asset (79).png"/>
+        <None Remove="assets\icons\Asset (8).png"/>
+        <Resource Include="assets\icons\Asset (8).png"/>
+        <None Remove="assets\icons\Asset (80).png"/>
+        <Resource Include="assets\icons\Asset (80).png"/>
+        <None Remove="assets\icons\Asset (81).png"/>
+        <Resource Include="assets\icons\Asset (81).png"/>
+        <None Remove="assets\icons\Asset (82).png"/>
+        <Resource Include="assets\icons\Asset (82).png"/>
+        <None Remove="assets\icons\Asset (83).png"/>
+        <Resource Include="assets\icons\Asset (83).png"/>
+        <None Remove="assets\icons\Asset (84).png"/>
+        <Resource Include="assets\icons\Asset (84).png"/>
+        <None Remove="assets\icons\Asset (85).png"/>
+        <Resource Include="assets\icons\Asset (85).png"/>
+        <None Remove="assets\icons\Asset (86).png"/>
+        <Resource Include="assets\icons\Asset (86).png"/>
+        <None Remove="assets\icons\Asset (87).png"/>
+        <Resource Include="assets\icons\Asset (87).png"/>
+        <None Remove="assets\icons\Asset (88).png"/>
+        <Resource Include="assets\icons\Asset (88).png"/>
+        <None Remove="assets\icons\Asset (89).png"/>
+        <Resource Include="assets\icons\Asset (89).png"/>
+        <None Remove="assets\icons\Asset (9).png"/>
+        <Resource Include="assets\icons\Asset (9).png"/>
+        <None Remove="assets\icons\Asset (90).png"/>
+        <Resource Include="assets\icons\Asset (90).png"/>
+        <None Remove="assets\icons\Asset (91).png"/>
+        <Resource Include="assets\icons\Asset (91).png"/>
+        <None Remove="assets\icons\Asset (92).png"/>
+        <Resource Include="assets\icons\Asset (92).png"/>
+        <None Remove="assets\icons\Asset (93).png"/>
+        <Resource Include="assets\icons\Asset (93).png"/>
+        <None Remove="assets\icons\Asset (94).png"/>
+        <Resource Include="assets\icons\Asset (94).png"/>
+        <None Remove="assets\icons\Asset (95).png"/>
+        <Resource Include="assets\icons\Asset (95).png"/>
+        <None Remove="assets\icons\Asset (96).png"/>
+        <Resource Include="assets\icons\Asset (96).png"/>
+        <None Remove="assets\icons\Asset (97).png"/>
+        <Resource Include="assets\icons\Asset (97).png"/>
+        <None Remove="assets\icons\Asset (98).png"/>
+        <Resource Include="assets\icons\Asset (98).png"/>
+        <None Remove="assets\icons\Asset (99).png"/>
+        <Resource Include="assets\icons\Asset (99).png"/>
+        <None Remove="assets\icons\B.png"/>
+        <Resource Include="assets\icons\B.png"/>
+        <None Remove="assets\icons\Bell.png"/>
+        <Resource Include="assets\icons\Bell.png"/>
+        <None Remove="assets\icons\BTN_A1.png"/>
+        <Resource Include="assets\icons\BTN_A1.png"/>
+        <None Remove="assets\icons\BTN_A2.png"/>
+        <Resource Include="assets\icons\BTN_A2.png"/>
+        <None Remove="assets\icons\BTN_A3.png"/>
+        <Resource Include="assets\icons\BTN_A3.png"/>
+        <None Remove="assets\icons\BTN_Line_4PX_Large.png"/>
+        <Resource Include="assets\icons\BTN_Line_4PX_Large.png"/>
+        <None Remove="assets\icons\BTN_Line_4PX_Medium.png"/>
+        <Resource Include="assets\icons\BTN_Line_4PX_Medium.png"/>
+        <None Remove="assets\icons\BTN_Line_4PX_Small.png"/>
+        <Resource Include="assets\icons\BTN_Line_4PX_Small.png"/>
+        <None Remove="assets\icons\Button_Large_A.png"/>
+        <Resource Include="assets\icons\Button_Large_A.png"/>
+        <None Remove="assets\icons\Button_Medium_A.png"/>
+        <Resource Include="assets\icons\Button_Medium_A.png"/>
+        <None Remove="assets\icons\Button_Small_A.png"/>
+        <Resource Include="assets\icons\Button_Small_A.png"/>
+        <None Remove="assets\icons\ButtonLargeRound.png"/>
+        <Resource Include="assets\icons\ButtonLargeRound.png"/>
+        <None Remove="assets\icons\ButtonMediumRound.png"/>
+        <Resource Include="assets\icons\ButtonMediumRound.png"/>
+        <None Remove="assets\icons\ButtonSmallRound.png"/>
+        <Resource Include="assets\icons\ButtonSmallRound.png"/>
+        <None Remove="assets\icons\C.png"/>
+        <Resource Include="assets\icons\C.png"/>
+        <None Remove="assets\icons\CIRCLE2PXLAR.png"/>
+        <Resource Include="assets\icons\CIRCLE2PXLAR.png"/>
+        <None Remove="assets\icons\CIRCLE2PXMED.png"/>
+        <Resource Include="assets\icons\CIRCLE2PXMED.png"/>
+        <None Remove="assets\icons\CIRCLE2PXSMALL.png"/>
+        <Resource Include="assets\icons\CIRCLE2PXSMALL.png"/>
+        <None Remove="assets\icons\CIRCLE4PXLAR.png"/>
+        <Resource Include="assets\icons\CIRCLE4PXLAR.png"/>
+        <None Remove="assets\icons\CIRCLE4PXMED.png"/>
+        <Resource Include="assets\icons\CIRCLE4PXMED.png"/>
+        <None Remove="assets\icons\CIRCLE4PXSMA.png"/>
+        <Resource Include="assets\icons\CIRCLE4PXSMA.png"/>
+        <None Remove="assets\icons\Close BTN.png"/>
+        <Resource Include="assets\icons\Close BTN.png"/>
+        <None Remove="assets\icons\Coin.png"/>
+        <Resource Include="assets\icons\Coin.png"/>
+        <None Remove="assets\icons\D.png"/>
+        <Resource Include="assets\icons\D.png"/>
+        <None Remove="assets\icons\Divider.png"/>
+        <Resource Include="assets\icons\Divider.png"/>
+        <None Remove="assets\icons\Down BTN.png"/>
+        <Resource Include="assets\icons\Down BTN.png"/>
+        <None Remove="assets\icons\E.png"/>
+        <Resource Include="assets\icons\E.png"/>
+        <None Remove="assets\icons\F.png"/>
+        <Resource Include="assets\icons\F.png"/>
+        <None Remove="assets\icons\Facebook.png"/>
+        <Resource Include="assets\icons\Facebook.png"/>
+        <None Remove="assets\icons\Facebook 2.png"/>
+        <Resource Include="assets\icons\Facebook 2.png"/>
+        <None Remove="assets\icons\Gem.png"/>
+        <Resource Include="assets\icons\Gem.png"/>
+        <None Remove="assets\icons\Heart.png"/>
+        <Resource Include="assets\icons\Heart.png"/>
+        <None Remove="assets\icons\Icon Sets.png"/>
+        <Resource Include="assets\icons\Icon Sets.png"/>
+        <None Remove="assets\icons\Info.png"/>
+        <Resource Include="assets\icons\Info.png"/>
+        <None Remove="assets\icons\InputField.png"/>
+        <Resource Include="assets\icons\InputField.png"/>
+        <None Remove="assets\icons\Inventory.png"/>
+        <Resource Include="assets\icons\Inventory.png"/>
+        <None Remove="assets\icons\Left Arrow.png"/>
+        <Resource Include="assets\icons\Left Arrow.png"/>
+        <None Remove="assets\icons\Left BTN.png"/>
+        <Resource Include="assets\icons\Left BTN.png"/>
+        <None Remove="assets\icons\Lock.png"/>
+        <Resource Include="assets\icons\Lock.png"/>
+        <None Remove="assets\icons\Messages.png"/>
+        <Resource Include="assets\icons\Messages.png"/>
+        <None Remove="assets\icons\Missions.png"/>
+        <Resource Include="assets\icons\Missions.png"/>
+        <None Remove="assets\icons\Music.png"/>
+        <Resource Include="assets\icons\Music.png"/>
+        <None Remove="assets\icons\Ranks.png"/>
+        <Resource Include="assets\icons\Ranks.png"/>
+        <None Remove="assets\icons\Right Arrow.png"/>
+        <Resource Include="assets\icons\Right Arrow.png"/>
+        <None Remove="assets\icons\Right BTN.png"/>
+        <Resource Include="assets\icons\Right BTN.png"/>
+        <None Remove="assets\icons\Settings.png"/>
+        <Resource Include="assets\icons\Settings.png"/>
+        <None Remove="assets\icons\Shop.png"/>
+        <Resource Include="assets\icons\Shop.png"/>
+        <None Remove="assets\icons\Sound.png"/>
+        <Resource Include="assets\icons\Sound.png"/>
+        <None Remove="assets\icons\Star.png"/>
+        <Resource Include="assets\icons\Star.png"/>
+        <None Remove="assets\icons\Up BTN.png"/>
+        <Resource Include="assets\icons\Up BTN.png"/>
+        <None Remove="assets\icons\World.png"/>
+        <Resource Include="assets\icons\World.png"/>
+        <None Remove="assets\icons\X.png"/>
+        <Resource Include="assets\icons\X.png"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Page Update="Views\Console\ConsoleView.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Console\LogView.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Fields\Vector1DView.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Fields\Vector2DView.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Components\CameraComponentView.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Components\ComponentView.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+        <Page Update="Views\Components\TransformView.xaml">
+            <Generator>MSBuild:Compile</Generator>
+            <XamlRuntime>Wpf</XamlRuntime>
+            <SubType>Designer</SubType>
+        </Page>
+    </ItemGroup>
+
+</Project>

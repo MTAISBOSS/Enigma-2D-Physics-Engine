@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="Enigma_Editor.Views.Assets.FolderTreeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <TreeViewItem Foreground="White"
+                  Header="Assets">
+        <TreeViewItem Foreground="White" Header="Textures" />
+        <TreeViewItem Foreground="White" Header="Models" />
+        <TreeViewItem Foreground="White" Header="Scenes" />
+        <TreeViewItem Foreground="White" Header="Scripts" />
+    </TreeViewItem>
+
+
+</UserControl>

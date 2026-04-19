@@ -1,0 +1,35 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="TabControl" x:Key="EditorTabControl">
+
+        <Setter Property="Background" Value="#22202C" />
+        <Setter Property="BorderThickness" Value="0" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+
+                <ControlTemplate TargetType="TabControl">
+
+                    <DockPanel>
+
+                        <!-- Tab headers -->
+                        <TabPanel DockPanel.Dock="Top"
+                                  Background="#1A1821"
+                                  IsItemsHost="True" />
+
+                        <!-- Tab content -->
+                        <Border Background="#22202C">
+                            <ContentPresenter
+                                ContentSource="SelectedContent" />
+                        </Border>
+
+                    </DockPanel>
+
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+</ResourceDictionary>

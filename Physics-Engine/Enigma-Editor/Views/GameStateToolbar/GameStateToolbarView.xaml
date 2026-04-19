@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Enigma_Editor.Views.GameStateToolbar.GameStateToolbarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Border BorderThickness="1" BorderBrush="Azure"
+            Background="#22202C">
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+            <Button Style="{StaticResource EditorButton}" Width="40" Height="30">
+                <Image Width="16" Height="16" Source="pack://application:,,,/assets/icons/Asset (89).png" />
+            </Button>
+            <Button Click="Play_Click" Style="{StaticResource EditorButton}" Width="40" Height="30">
+                <Image Width="16" Height="16" Source="pack://application:,,,/assets/icons/Asset (87).png" />
+            </Button>
+            <Button Style="{StaticResource EditorButton}" Width="40" Height="30">
+                <Image Width="16" Height="16" Source="pack://application:,,,/assets/icons/Asset (88).png" />
+            </Button>
+
+        </StackPanel>
+    </Border>
+</UserControl>

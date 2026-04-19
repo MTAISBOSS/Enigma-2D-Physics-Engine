@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Enigma_Editor.Views.Console.FileGridView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer
+        VerticalScrollBarVisibility="Auto">
+
+        <WrapPanel Margin="10">
+            <Button Style="{StaticResource EditorButton}">
+                <StackPanel Width="70" Margin="5">
+                    <Image Width="32"
+                           Height="32"
+                           Source="pack://application:,,,/assets/icons/Asset (5).png" />
+                    <TextBlock Text="Texture.png"
+                               Foreground="White"
+                               FontSize="10"
+                               TextAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+
+            <Button Style="{StaticResource EditorButton}">
+                <StackPanel Width="70" Margin="5">
+                    <Image Width="32"
+                           Height="32"
+                           Source="pack://application:,,,/assets/icons/Asset (6).png" />
+                    <TextBlock Text="Arts"
+                               Foreground="White"
+                               FontSize="10"
+                               TextAlignment="Center" />
+                </StackPanel>
+            </Button>
+
+        </WrapPanel>
+
+    </ScrollViewer>
+
+</UserControl>
